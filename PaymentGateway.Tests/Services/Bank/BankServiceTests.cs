@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-using PaymentGateway.Services.Bank;
-using PaymentGateway.Utils.Exceptions;
 
 namespace PaymentGateway.Tests.Services
 {
