@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaymentGateway.Services.DataStore
 {
@@ -17,8 +16,6 @@ namespace PaymentGateway.Services.DataStore
             get => String.IsNullOrEmpty(_currency) ? "GBP" : _currency;
             set => _currency = value;
         }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
     }
 }

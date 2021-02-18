@@ -12,7 +12,6 @@ using PaymentGateway.API.Endpoints;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using PaymentGateway.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace PaymentGateway.API

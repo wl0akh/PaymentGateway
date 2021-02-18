@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using PaymentGateway.API.Endpoints;
 using TechTalk.SpecFlow;
 
 namespace PaymentGateway.Tests.Endpoints

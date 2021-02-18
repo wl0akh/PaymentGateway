@@ -1,4 +1,3 @@
-using System;
 using TechTalk.SpecFlow;
 
 namespace PaymentGateway.Tests.Endpoints.RetrievePayment

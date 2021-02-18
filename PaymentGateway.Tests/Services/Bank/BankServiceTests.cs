@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using PaymentGateway.Services.Bank;
+using PaymentGateway.Utils.Exceptions;
 
 namespace PaymentGateway.Tests.Services
 {
@@ -67,7 +69,7 @@ namespace PaymentGateway.Tests.Services
 
             var bankService = new BankService(url, httpClientFactory.Object);
 
-            // Check if it throws CustomException when unable to connect
+            // Check if it throws BankServiceException when unable to connect
             Assert.ThrowsAsync<BankServiceException>(
             async () => await ExecuteBankService(bankService));
         }

@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Moq;
 using NUnit.Framework;
 using PaymentGateway.Utils.CustomValidationAttributes;
 
