@@ -1,0 +1,179 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.Tests/PaymentGateway.Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/PaymentGateway.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/PaymentGateway.API.csproj",
+        "projectName": "PaymentGateway.API",
+        "projectPath": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/PaymentGateway.API.csproj",
+        "packagesPath": "/Users/adil.khan/.nuget/packages/",
+        "outputPath": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/adil.khan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "MySql.Data.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.*, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.403/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.Tests/PaymentGateway.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.Tests/PaymentGateway.Tests.csproj",
+        "projectName": "PaymentGateway.Tests",
+        "projectPath": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.Tests/PaymentGateway.Tests.csproj",
+        "packagesPath": "/Users/adil.khan/.nuget/packages/",
+        "outputPath": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/adil.khan/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/PaymentGateway.API.csproj": {
+                "projectPath": "/Users/adil.khan/adilKhan/PaymentGateway/PaymentGateway.API/PaymentGateway.API.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "MbDotNet": {
+              "target": "Package",
+              "version": "[4.*, )"
+            },
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.*, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.*, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.*, )"
+            },
+            "NJsonSchema": {
+              "target": "Package",
+              "version": "[10.*, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.*, )"
+            },
+            "SpecFlow": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "SpecFlow.NUnit": {
+              "target": "Package",
+              "version": "[3.*, )"
+            },
+            "SpecFlow.Tools.MsBuild.Generation": {
+              "target": "Package",
+              "version": "[3.*, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.403/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
