@@ -21,11 +21,6 @@ services:
       - ./:/app
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - OPENID_TOKEN_EXPIRES=30
-      - OPENID_CLIENT_SECRET=9w0oBB6pKNQe5S5ducqJVNv9hXmA2Po1i1IOZx4ReMmzSPwZ7bLM-Bp1sItMXvBl
-      - OPENID_ISSUER=http://openid.issuer.payment.gateway
-      - OPENID_AUDIENCE=checkout/payment.gateway
-      - OPENID_ALLOWED_PRINCIPALS=GCnQ7MHQdj9xYKTyE7NIeUC6MJf9klgP
       - BANK_SERVICE_URL=http://mountebank:4545/payments
       - MYSQL_CONNECTION_STRING="server=MYSQL;uid=root;pwd=admin;database=PaymentGateway"
     command: "dotnet run --project app/PaymentGateway.API/PaymentGateway.API.csproj"

@@ -23,7 +23,9 @@
                 "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "BANK_SERVICE_URL": "http://localhost:4545/payments",
+                "MYSQL_CONNECTION_STRING": "server=localhost;uid=root;pwd=admin;database=PaymentGateway"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

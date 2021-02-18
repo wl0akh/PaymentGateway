@@ -28,11 +28,6 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
         [BeforeFeature]
         public static void SetUpRegisteredJwt()
         {
-            Environment.SetEnvironmentVariable("OPENID_ISSUER", "http://openid.issuer.payment.gateway");
-            Environment.SetEnvironmentVariable("OPENID_CLIENT_SECRET", "RAou-9GpgU3pGwoq61jf27tvaOmoJ91E2NtoYhM8pkRF-9qKbWkJYxxoruz3YTHi");
-            Environment.SetEnvironmentVariable("OPENID_AUDIENCE", "checkout/payment.gateway9");
-            Environment.SetEnvironmentVariable("OPENID_ALLOWED_PRINCIPALS", "GCnQ7MHQdj9xYKTyE7NIeUC6MJf9klgu");
-            Environment.SetEnvironmentVariable("OPENID_TOKEN_EXPIRES", "30");
             Environment.SetEnvironmentVariable("BANK_SERVICE_URL", "http://localhost:4545/payments");
             Environment.SetEnvironmentVariable("MYSQL_CONNECTION_STRING", "server=localhost;uid=root;pwd=admin;database=TestPaymentGateway");
             _mountebankClient = new MountebankClient("http://localhost:2525");
