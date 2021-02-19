@@ -4,6 +4,6 @@ namespace PaymentGateway.Services.Bank
 {
     public interface IBankService
     {
-        Task<BankPaymentResponse> ExecutePaymentAsync(BankPaymentRequest bankPaymentRequest);
+        Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest);
     }
 }

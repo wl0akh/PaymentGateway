@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using PaymentGateway.API.Commands;
 
 namespace PaymentGateway.API
 {
@@ -39,6 +40,7 @@ namespace PaymentGateway.API
                 optionBuilder => optionBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"))
             );
             services.AddScoped<IDataStoreService, DataStoreService>();
+            services.AddTransient<IPayoutCommand, PayoutCommand>();
             services.AddTransient<IBankService>(
                 s => new BankService(
                         new Uri(Environment.GetEnvironmentVariable("BANK_SERVICE_URL")),

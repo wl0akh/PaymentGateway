@@ -21,8 +21,8 @@ namespace PaymentGateway.Tests.Services
             var body = GenerateRequestBody(Guid.NewGuid(), "successful");
             Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
             var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
-            BankPaymentResponse result = await ExecuteBankService(bankService);
-            Assert.IsInstanceOf<BankPaymentResponse>(result);
+            BankPayOutResponse result = await ExecuteBankService(bankService);
+            Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
             Assert.AreEqual("successful", result.Status);
         }
@@ -33,8 +33,8 @@ namespace PaymentGateway.Tests.Services
             var body = GenerateRequestBody(Guid.NewGuid(), "unsuccessful");
             Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
             var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
-            BankPaymentResponse result = await ExecuteBankService(bankService);
-            Assert.IsInstanceOf<BankPaymentResponse>(result);
+            BankPayOutResponse result = await ExecuteBankService(bankService);
+            Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
             Assert.AreEqual("unsuccessful", result.Status);
         }
@@ -76,8 +76,8 @@ namespace PaymentGateway.Tests.Services
 
         private static StringContent GenerateRequestBody(Guid guid, string status)
         {
-            return new StringContent(JsonSerializer.Serialize<BankPaymentResponse>(
-                    new BankPaymentResponse
+            return new StringContent(JsonSerializer.Serialize<BankPayOutResponse>(
+                    new BankPayOutResponse
                     {
                         PaymentId = guid,
                         Status = status
@@ -85,10 +85,10 @@ namespace PaymentGateway.Tests.Services
                     ));
         }
 
-        private static Task<BankPaymentResponse> ExecuteBankService(BankService bankService)
+        private static Task<BankPayOutResponse> ExecuteBankService(BankService bankService)
         {
             var futureDate = DateTime.Now.AddDays(30);
-            return bankService.ExecutePaymentAsync(new BankPaymentRequest
+            return bankService.PayOutAsync(new BankPayOutRequest
             {
                 CardNumber = "",
                 Expiry = $"{futureDate.Month:00}/{futureDate.Year}",

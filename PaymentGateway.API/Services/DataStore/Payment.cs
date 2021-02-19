@@ -1,4 +1,6 @@
 using System;
+using PaymentGateway.API.Endpoints.ProcessPayment;
+using PaymentGateway.Services.Bank;
 
 namespace PaymentGateway.Services.DataStore
 {
@@ -17,5 +19,18 @@ namespace PaymentGateway.Services.DataStore
             set => _currency = value;
         }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public static Payment FromPaymentRequest(PaymentRequest paymentRequest, BankPayOutResponse bankResponse)
+        {
+            return new Payment
+            {
+                PaymentId = bankResponse.PaymentId,
+                CardNumber = paymentRequest.CardNumber,
+                Status = bankResponse.Status,
+                Expiry = paymentRequest.Expiry,
+                Amount = paymentRequest.Amount,
+                Currency = paymentRequest.Currency
+            };
+        }
     }
 }

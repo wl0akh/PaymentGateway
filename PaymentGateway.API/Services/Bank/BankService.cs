@@ -18,12 +18,12 @@ namespace PaymentGateway.Services.Bank
             this._clientFactory = clientFactory;
         }
 
-        public async Task<BankPaymentResponse> ExecutePaymentAsync(BankPaymentRequest bankPaymentRequest)
+        public async Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, this._url);
             request.Headers.Add("Authorization", "Bearer ****");
             request.Content = new StringContent(
-                JsonSerializer.Serialize<BankPaymentRequest>(bankPaymentRequest),
+                JsonSerializer.Serialize<BankPayOutRequest>(bankPaymentRequest),
                 Encoding.UTF8,
                 "application/json"
             );
@@ -34,7 +34,7 @@ namespace PaymentGateway.Services.Bank
             {
                 var response = await client.SendAsync(request);
                 var body = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<BankPaymentResponse>(body);
+                return JsonSerializer.Deserialize<BankPayOutResponse>(body);
             }
             catch (JsonException jsonException)
             {

@@ -2,7 +2,7 @@ using System;
 
 namespace PaymentGateway.API.Endpoints.ProcessPayment
 {
-    public class ProcessPaymentResponse
+    public class PaymentResponse
     {
         public Guid PaymentId { get; set; }
     }
