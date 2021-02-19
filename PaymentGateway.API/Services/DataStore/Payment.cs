@@ -6,16 +6,16 @@ namespace PaymentGateway.Services.DataStore
     {
 
         private string _currency;
-        public Guid paymentId { get; set; }
-        public string cardNumber { get; set; }
-        public string status { get; set; }
-        public string expiry { get; set; }
-        public decimal? amount { get; set; }
-        public string currency
+        public Guid PaymentId { get; set; }
+        public string CardNumber { get; set; }
+        public string Status { get; set; }
+        public string Expiry { get; set; }
+        public decimal? Amount { get; set; }
+        public string Currency
         {
             get => String.IsNullOrEmpty(_currency) ? "GBP" : _currency;
             set => _currency = value;
         }
-        public DateTime createdAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

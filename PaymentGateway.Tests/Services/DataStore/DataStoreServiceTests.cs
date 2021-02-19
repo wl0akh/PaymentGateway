@@ -37,15 +37,15 @@ namespace PaymentGateway.Tests.Services.DataStore
                 .UseInMemoryDatabase(databaseName: "DataStoreDbContext").Options;
             var expectedPayment = GeneratePayment();
             await CreateRecord(options, expectedPayment);
-            var actualPayment = await GetRecord(options, expectedPayment.paymentId);
+            var actualPayment = await GetRecord(options, expectedPayment.PaymentId);
 
-            Assert.AreEqual(expectedPayment.paymentId, actualPayment.paymentId);
-            Assert.AreEqual(expectedPayment.cardNumber, actualPayment.cardNumber);
-            Assert.AreEqual(expectedPayment.status, actualPayment.status);
-            Assert.AreEqual(expectedPayment.expiry, actualPayment.expiry);
-            Assert.AreEqual(expectedPayment.amount, actualPayment.amount);
-            Assert.AreEqual(expectedPayment.currency, actualPayment.currency);
-            Assert.IsInstanceOf<DateTime>(actualPayment.createdAt);
+            Assert.AreEqual(expectedPayment.PaymentId, actualPayment.PaymentId);
+            Assert.AreEqual(expectedPayment.CardNumber, actualPayment.CardNumber);
+            Assert.AreEqual(expectedPayment.Status, actualPayment.Status);
+            Assert.AreEqual(expectedPayment.Expiry, actualPayment.Expiry);
+            Assert.AreEqual(expectedPayment.Amount, actualPayment.Amount);
+            Assert.AreEqual(expectedPayment.Currency, actualPayment.Currency);
+            Assert.IsInstanceOf<DateTime>(actualPayment.CreatedAt);
         }
 
         [Test]
@@ -79,12 +79,12 @@ namespace PaymentGateway.Tests.Services.DataStore
         {
             return new Payment
             {
-                paymentId = Guid.NewGuid(),
-                cardNumber = "5000000000000000004",
-                status = "successful",
-                expiry = "12/24",
-                amount = 24.31m,
-                currency = "GBP"
+                PaymentId = Guid.NewGuid(),
+                CardNumber = "5000000000000000004",
+                Status = "successful",
+                Expiry = "12/24",
+                Amount = 24.31m,
+                Currency = "GBP"
             };
         }
     }

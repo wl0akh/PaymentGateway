@@ -56,7 +56,7 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
         [Then(@"payment is recorded in data store with (.*) as (.*)")]
         public async Task ThenPaymentIsRecordedInDataStoreWithFieldAsValueAsync(string propName, string value)
         {
-            Guid paymentId = Guid.Parse(this._context.GetPaymentIdFromHeader("paymentId"));
+            Guid paymentId = Guid.Parse(this._context.GetPaymentIdFromHeader("PaymentId"));
             var payment = await GetPaymentAsync(paymentId);
             var actualValue = payment.GetType().GetProperty(propName).GetValue(payment, null);
             Assert.AreEqual(value, actualValue.ToString());
@@ -77,7 +77,10 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
         [Then(@"payment Id (.*) returned in response header")]
         public void ThenPaymentIdIsReturnedInResponseHeader(string isReturned)
         {
-            Assert.IsNotNull(this._context.Response.Headers.Location);
+            if (isReturned == "is")
+            {
+                Assert.IsNotNull(this._context.Response.Headers.Location);
+            }
         }
         private static async Task CreateBankServiceImposterAsync(string responseBody)
         {
@@ -99,7 +102,7 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
                 .UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING")).Options;
             using (var dbContext = new DataStoreDbContext(options))
             {
-                return await dbContext.Payments.FirstAsync<Payment>(r => r.paymentId == Id);
+                return await dbContext.Payments.FirstAsync<Payment>(r => r.PaymentId == Id);
             }
         }
         private static async Task DropDBAsync()

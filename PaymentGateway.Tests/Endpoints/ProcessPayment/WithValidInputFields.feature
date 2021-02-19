@@ -7,39 +7,39 @@ Feature: With Valid Input Fields
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "<amount?>",
-                "currency": "<currency?>",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "<Amount?>",
+                "Currency": "<Currency?>",
+                "CVV": "123"
             }
             """
         When Bank Service Responds as
             """
             {
-                "paymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
-                "status": "<status?>"
+                "PaymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
+                "Status": "<Status?>"
             }
             """
         And a POST is called on /api/payments
         Then it returns response with status code Created
         And payment Id is returned in response header
         And payment is recorded in data store
-        And payment is recorded in data store with paymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
-        And payment is recorded in data store with cardNumber as 5500000000000004
-        And payment is recorded in data store with status as <status?>
-        And payment is recorded in data store with expiry as 12/2024
-        And payment is recorded in data store with amount as <amount?>
-        And payment is recorded in data store with currency as <currencyInResponse?>
+        And payment is recorded in data store with PaymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
+        And payment is recorded in data store with CardNumber as 5500000000000004
+        And payment is recorded in data store with Status as <Status?>
+        And payment is recorded in data store with Expiry as 12/2024
+        And payment is recorded in data store with Amount as <Amount?>
+        And payment is recorded in data store with Currency as <CurrencyInResponse?>
         Examples:
-            | amount? | currency? | status?      | currencyInResponse? |
-            #currency is empty
+            | Amount? | Currency? | Status?      | CurrencyInResponse? |
+            #Currency is empty
             | 41.00   |           | successful   | GBP                 |
-            #amount is greter than 0
+            #Amount is greter than 0
             | 41.00   | USD       | successful   | USD                 |
-            #amount is less than 0
+            #Amount is less than 0
             | -51.92  | USD       | successful   | USD                 |
-            #amount is equal to 0
+            #Amount is equal to 0
             | 0.00    | GBP       | successful   | GBP                 |
             #BankTransection unsuccessful
             | 24.00   | USD       | unsuccessful | USD                 |
@@ -50,11 +50,11 @@ Feature: With Valid Input Fields
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "currency": "GBP",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "Currency": "GBP",
+                "CVV": "123"
             }
             """
         When Bank Service is inaccessible
@@ -67,11 +67,11 @@ Feature: With Valid Input Fields
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "currency": "GBP",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "Currency": "GBP",
+                "CVV": "123"
             }
             """
         When Bank Service Responds as
@@ -83,32 +83,32 @@ Feature: With Valid Input Fields
         And Bank Service Incompatible is shown in response body
         And payment is not recorded in data store
 
-    Scenario: Process Payment when currency is not supplyed
+    Scenario: Process Payment when Currency is not supplyed
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "CVV": "123"
             }
             """
         When Bank Service Responds as
             """
             {
-                "paymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
-                "status": "successful"
+                "PaymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
+                "Status": "successful"
             }
             """
         And a POST is called on /api/payments
         Then it returns response with status code Created
         And payment Id is returned in response header
         And payment is recorded in data store
-        And payment is recorded in data store with paymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
-        And payment is recorded in data store with status as successful
-        And payment is recorded in data store with cardNumber as 5500000000000004
-        And payment is recorded in data store with expiry as 12/2024
-        And payment is recorded in data store with amount as 24.56
-        And payment is recorded in data store with currency as GBP
+        And payment is recorded in data store with PaymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
+        And payment is recorded in data store with Status as successful
+        And payment is recorded in data store with CardNumber as 5500000000000004
+        And payment is recorded in data store with Expiry as 12/2024
+        And payment is recorded in data store with Amount as 24.56
+        And payment is recorded in data store with Currency as GBP
 
 

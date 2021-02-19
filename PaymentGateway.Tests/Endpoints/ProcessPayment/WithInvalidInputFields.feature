@@ -6,19 +6,19 @@ Feature: With Invalid Input Fields
         Given a request with body as
             """
             {
-                "cardNumber": "<CardNumber>",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "currency": "GBP",
-                "cvv": "123"
+                "CardNumber": "<CardNumber?>",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "Currency": "GBP",
+                "CVV": "123"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain cardNumber in error key
+        And response body contain CardNumber in error key
         And payment is not recorded in data store
         Examples:
-            | CardNumber            |
+            | CardNumber?           |
             #Length more than 19
             | 55000000000000000041  |
             #Length less than 12
@@ -30,22 +30,22 @@ Feature: With Invalid Input Fields
             #Contains space
             | '550000000 0000 0004' |
 
-    Scenario Outline: Process Payment when invalid expiry is provided
+    Scenario Outline: Process Payment when invalid Expiry is provided
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "<Expiry>",
-                "amount": "24.56",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "<Expiry?>",
+                "Amount": "24.56",
+                "CVV": "123"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain expiry in error key
+        And response body contain Expiry in error key
         And payment is not recorded in data store
         Examples:
-            | Expiry   |
+            | Expiry?  |
             #Expiry has passed
             | 12/1990  |
             #Empty string
@@ -63,64 +63,64 @@ Feature: With Invalid Input Fields
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "<Amount>",
-                "currency": "GBP",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "<Amount?>",
+                "Currency": "GBP",
+                "CVV": "123"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain amount in error key
+        And response body contain Amount in error key
         And payment is not recorded in data store
         Examples:
-            | Amount |
+            | Amount? |
             #Empty string
-            |        |
+            |         |
             #Contains String
-            | 4FH    |
+            | 4FH     |
 
     Scenario Outline: Process Payment when invalid Currency is provided
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "currency": "<Currency>",
-                "cvv": "123"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "Currency": "<Currency?>",
+                "CVV": "123"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain currency in error key
+        And response body contain Currency in error key
         And payment is not recorded in data store
         Examples:
-            | Currency |
+            | Currency? |
             #Length less than 3
-            | HF       |
+            | HF        |
             #Length more than 3
-            | HFHH     |
+            | HFHH      |
             #Contains Digits
-            | HF3      |
+            | HF3       |
             #Contains String out of (A-Z or a-z)
-            | ab!      |
+            | ab!       |
 
     Scenario Outline: Process Payment when invalid CVV is provided
         Given a request with body as
             """
             {
-                "cardNumber": "5500000000000004",
-                "expiry": "12/2024",
-                "amount": "24.56",
-                "currency": "GBP",
-                "cvv": "<CVV>"
+                "CardNumber": "5500000000000004",
+                "Expiry": "12/2024",
+                "Amount": "24.56",
+                "Currency": "GBP",
+                "CVV": "<CVV>"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain cvv in error key
+        And response body contain CVV in error key
         And payment is not recorded in data store
         Examples:
             | CVV  |

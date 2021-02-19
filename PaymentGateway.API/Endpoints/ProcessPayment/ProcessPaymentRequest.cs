@@ -10,31 +10,31 @@ namespace PaymentGateway.API.Endpoints.ProcessPayment
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "The cardNumber must not be empty")]
         [RegularExpression(@"^(\d{12,19})$", ErrorMessage = "The cardNumber must be of 12 to 19 digits")]
-        public string cardNumber { get; set; }
+        public string CardNumber { get; set; }
 
 
         [CreditCardExpiryDateAttribute(ErrorMessage = "The expiry must be in future and in the formate: MM/YYYY")]
-        public string expiry { get; set; }
+        public string Expiry { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The amount must not be empty")]
-        public decimal? amount { get; set; }
+        public decimal? Amount { get; set; }
 
         [RegularExpression(@"^([a-zA-Z]{3})$", ErrorMessage = "The currency must be 3 letter string")]
-        public string currency { get; set; }
+        public string Currency { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The cvv must not be empty")]
         [RegularExpression(@"^(\d{3})$", ErrorMessage = "The cvv must 3 digits")]
-        public string cvv { get; set; }
+        public string CVV { get; set; }
 
         public BankPaymentRequest ToBankPaymentRequest()
         {
             return new BankPaymentRequest
             {
-                CardNumber = this.cardNumber,
-                Expiry = this.expiry,
-                Amount = (decimal)this.amount,
-                Currency = this.currency,
-                CVV = this.cvv
+                CardNumber = this.CardNumber,
+                Expiry = this.Expiry,
+                Amount = (decimal)this.Amount,
+                Currency = this.Currency,
+                CVV = this.CVV
 
             };
         }
@@ -42,12 +42,12 @@ namespace PaymentGateway.API.Endpoints.ProcessPayment
         {
             return new Payment
             {
-                paymentId = newPaymentId,
-                status = bankPaymentStatus,
-                cardNumber = this.cardNumber,
-                expiry = this.expiry,
-                amount = (decimal)this.amount,
-                currency = this.currency
+                PaymentId = newPaymentId,
+                Status = bankPaymentStatus,
+                CardNumber = this.CardNumber,
+                Expiry = this.Expiry,
+                Amount = (decimal)this.Amount,
+                Currency = this.Currency
             };
         }
     }

@@ -30,8 +30,8 @@ namespace PaymentGateway.API.Endpoints.ProcessPayment
             try
             {
                 var bankServiceResponse = await this._bankService.ExecutePaymentAsync(paymentRequest.ToBankPaymentRequest());
-                var newPaymentId = bankServiceResponse.paymentId;
-                await this._dataStoreService.CreateAsync(paymentRequest.ToPayment(newPaymentId, bankServiceResponse.status));
+                var newPaymentId = bankServiceResponse.PaymentId;
+                await this._dataStoreService.CreateAsync(paymentRequest.ToPayment(newPaymentId, bankServiceResponse.Status));
                 return Created($"/api/payments/{newPaymentId}", new ProcessPaymentResponse { PaymentId = newPaymentId });
             }
             catch (BankServiceException ex)

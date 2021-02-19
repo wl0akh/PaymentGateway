@@ -23,8 +23,8 @@ namespace PaymentGateway.Tests.Services
             var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
             BankPaymentResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPaymentResponse>(result);
-            Assert.IsNotNull(result.paymentId);
-            Assert.AreEqual("successful", result.status);
+            Assert.IsNotNull(result.PaymentId);
+            Assert.AreEqual("successful", result.Status);
         }
 
         [Test]
@@ -35,8 +35,8 @@ namespace PaymentGateway.Tests.Services
             var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
             BankPaymentResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPaymentResponse>(result);
-            Assert.IsNotNull(result.paymentId);
-            Assert.AreEqual("unsuccessful", result.status);
+            Assert.IsNotNull(result.PaymentId);
+            Assert.AreEqual("unsuccessful", result.Status);
         }
 
         [Test]
@@ -79,8 +79,8 @@ namespace PaymentGateway.Tests.Services
             return new StringContent(JsonSerializer.Serialize<BankPaymentResponse>(
                     new BankPaymentResponse
                     {
-                        paymentId = guid,
-                        status = status
+                        PaymentId = guid,
+                        Status = status
                     }
                     ));
         }
