@@ -15,7 +15,7 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain CardNumber in error key
+        And response body contain value with CardNumber key
         And payment is not recorded in data store
         Examples:
             | CardNumber?           |
@@ -42,7 +42,7 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain Expiry in error key
+        And response body contain value with Expiry key
         And payment is not recorded in data store
         Examples:
             | Expiry?  |
@@ -72,7 +72,7 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain Amount in error key
+        And response body contain value with Amount key
         And payment is not recorded in data store
         Examples:
             | Amount? |
@@ -94,7 +94,7 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain Currency in error key
+        And response body contain value with Currency key
         And payment is not recorded in data store
         Examples:
             | Currency? |
@@ -120,7 +120,7 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain CVV in error key
+        And response body contain value with CVV key
         And payment is not recorded in data store
         Examples:
             | CVV  |

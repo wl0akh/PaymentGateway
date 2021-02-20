@@ -9,7 +9,7 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain "" in error key
+        And response body contain value with "" key
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field CardNumber is not provided
@@ -24,7 +24,7 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain CardNumber in error key
+        And response body contain value with CardNumber key
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field Expiry is not provided
@@ -39,7 +39,7 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain Expiry in error key
+        And response body contain value with Expiry key
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field Amount is not provided
@@ -54,7 +54,7 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain Amount in error key
+        And response body contain value with Amount key
         And payment is not recorded in data store
 
 
@@ -70,5 +70,5 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain CVV in error key
+        And response body contain value with CVV key
         And payment is not recorded in data store

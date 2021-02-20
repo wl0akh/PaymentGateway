@@ -62,14 +62,6 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
             }
         }
 
-        [Then(@"(.*) is shown in standard error response body")]
-        public async Task ThenResponseBodyContainInErrorKey(string field)
-        {
-            var result = await this._context.Response.Content.ReadAsStringAsync();
-            var errorResponse = JsonSerializer.Deserialize<StandardErrorResponse>(result);
-            Assert.AreEqual(field, errorResponse.Error);
-        }
-
         [Then(@"payment (.*) recorded in data store")]
         public async Task ThenPaymentRecordedInDataStoreAsync(string isRecorded)
         {

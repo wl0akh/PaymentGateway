@@ -61,7 +61,7 @@ Feature: With Valid Input Fields
         When Bank Service is inaccessible
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And Bank Service Unavailable is shown in standard error response body
+        And response body contain value with Bank Service Unavailable key
         And payment is not recorded in data store
 
     Scenario: Process Payment when Bank Service response not valid
@@ -81,7 +81,7 @@ Feature: With Valid Input Fields
             """
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And Bank Service Incompatible is shown in standard error response body
+        And response body contain value with Bank Service Incompatible key
         And payment is not recorded in data store
 
     Scenario: Process Payment when Currency is not supplyed

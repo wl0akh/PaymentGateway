@@ -43,12 +43,11 @@ namespace PaymentGateway.Tests.Endpoints
             Assert.AreEqual(code, this._context.Response.StatusCode.ToString());
         }
 
-        [Then(@"response body contain (.*) in error key")]
+        [Then(@"response body contain value with (.*) key")]
         public async Task ThenResponseBodyContainInErrorKey(string field)
         {
             var result = await this._context.Response.Content.ReadAsStringAsync();
-            var errorResponse = JsonSerializer.Deserialize<Dictionary<string, object>>(result);
-            Assert.IsTrue(errorResponse.Keys.Contains(field.Replace("\"", "").Replace("\'", "")));
+            Assert.IsTrue(result.Contains(field));
         }
     }
 }
