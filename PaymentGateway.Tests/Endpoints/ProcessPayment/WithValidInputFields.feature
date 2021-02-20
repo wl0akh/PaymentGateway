@@ -25,12 +25,13 @@ Feature: With Valid Input Fields
         Then it returns response with status code Created
         And payment Id is returned in response header
         And payment is recorded in data store
-        And payment is recorded in data store with PaymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
-        And payment is recorded in data store with CardNumber as 5500000000000004
-        And payment is recorded in data store with Status as <Status?>
-        And payment is recorded in data store with Expiry as 12/2024
-        And payment is recorded in data store with Amount as <Amount?>
-        And payment is recorded in data store with Currency as <CurrencyInResponse?>
+        And PaymentId in data store record is recorded as d3a36044-9996-4f46-a73f-5d82a7b85a85
+        And CardNumber in data store record is recorded as 5500000000000004
+        And Status in data store record is recorded as <Status?>
+        And Expiry in data store record is recorded as 12/2024
+        And Amount in data store record is recorded as <Amount?>
+        And Currency in data store record is recorded as <CurrencyInResponse?>
+        And CVV in data store record is not recorded as 123
         Examples:
             | Amount? | Currency? | Status?      | CurrencyInResponse? |
             #Currency is empty
@@ -60,7 +61,7 @@ Feature: With Valid Input Fields
         When Bank Service is inaccessible
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And Bank Service Unavailable is shown in response body
+        And Bank Service Unavailable is shown in standard error response body
         And payment is not recorded in data store
 
     Scenario: Process Payment when Bank Service response not valid
@@ -80,7 +81,7 @@ Feature: With Valid Input Fields
             """
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And Bank Service Incompatible is shown in response body
+        And Bank Service Incompatible is shown in standard error response body
         And payment is not recorded in data store
 
     Scenario: Process Payment when Currency is not supplyed
@@ -104,11 +105,12 @@ Feature: With Valid Input Fields
         Then it returns response with status code Created
         And payment Id is returned in response header
         And payment is recorded in data store
-        And payment is recorded in data store with PaymentId as d3a36044-9996-4f46-a73f-5d82a7b85a85
-        And payment is recorded in data store with Status as successful
-        And payment is recorded in data store with CardNumber as 5500000000000004
-        And payment is recorded in data store with Expiry as 12/2024
-        And payment is recorded in data store with Amount as 24.56
-        And payment is recorded in data store with Currency as GBP
+        And PaymentId in data store record is recorded as d3a36044-9996-4f46-a73f-5d82a7b85a85
+        And Status in data store record is recorded as successful
+        And CardNumber in data store record is recorded as 5500000000000004
+        And Expiry in data store record is recorded as 12/2024
+        And Amount in data store record is recorded as 24.56
+        And Currency in data store record is recorded as GBP
+        And CVV in data store record is not recorded as 123
 
 
