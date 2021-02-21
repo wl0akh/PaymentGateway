@@ -22,7 +22,9 @@ Steps to use the Payment service
 3) Open postman and import ```PaymentGateway.postman_collection.json```
 4) Click on ProcessPayment and inspect the request body and click send as shown below.
 <img width="1362" alt="post" src="https://user-images.githubusercontent.com/13693247/108630584-6b8b3d80-745d-11eb-9d33-0737435221d6.png">
-6) Copy the PaymentId from the response body and click on RetrievePayment request and replace "REPLACE-PAYMENT-ID-FROM-PROCESS-PAYMENT-RESPONSE" with the copied payment id and click send as shown below.
+
+5) Copy the PaymentId from the response body and click on RetrievePayment request and replace "REPLACE-PAYMENT-ID-FROM-PROCESS-PAYMENT-RESPONSE" with the copied payment id and click send as shown below.
+
 <img width="1362" alt="get" src="https://user-images.githubusercontent.com/13693247/108630613-907fb080-745d-11eb-887f-2be70178ecac.png">
 
 # Testing
