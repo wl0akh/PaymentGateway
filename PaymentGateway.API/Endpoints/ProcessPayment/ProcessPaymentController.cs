@@ -1,23 +1,28 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using PaymentGateway.API.Commands;
 using PaymentGateway.API.Utils.Filters;
 
 namespace PaymentGateway.API.Endpoints.ProcessPayment
 {
+    /// <summary>
+    /// controller class for ProcessPayment
+    /// </summary>
     [ApiController]
     public class ProcessPaymentController : ControllerBase
     {
 
-        private readonly ILogger<ProcessPaymentController> _logger;
         private readonly IPayoutCommand _payoutCommand;
-        public ProcessPaymentController(IPayoutCommand _payoutCommand, ILogger<ProcessPaymentController> _logger)
+        public ProcessPaymentController(IPayoutCommand _payoutCommand)
         {
-            this._logger = _logger;
             this._payoutCommand = _payoutCommand;
         }
 
+        /// <summary>
+        /// ProcessPaymentAsync  to create payment with  Payment details
+        /// </summary>
+        /// <param name="paymentRequest"></param>
+        /// <returns></returns>
         [Consumes("application/json")]
         [HttpPost("/api/payments")]
         [TrackingActionFilter]

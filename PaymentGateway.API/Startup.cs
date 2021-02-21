@@ -58,9 +58,8 @@ namespace PaymentGateway.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataStoreDbContext dataStoreDbContext, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataStoreDbContext dataStoreDbContext, ILogger<Startup> logger)
         {
-            var logger = loggerFactory.CreateLogger("System");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,9 +71,15 @@ namespace PaymentGateway.API
                 a => a.Run(async context =>
                 {
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    var requestTrackingService = context.RequestServices.GetRequiredService<RequestTrackingService>();
                     var ex = exceptionHandlerPathFeature.Error;
                     logger.LogError(ex, ex.Message);
-                    var result = Newtonsoft.Json.JsonConvert.SerializeObject(new StandardErrorResponse(ex));
+                    var result = Newtonsoft.Json.JsonConvert.SerializeObject(new StandardErrorResponse
+                    {
+                        Type = ex.GetType().ToString(),
+                        Error = ex.Message,
+                        RequestTraceId = requestTrackingService.RequestTraceId.ToString()
+                    });
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(result);
                 })

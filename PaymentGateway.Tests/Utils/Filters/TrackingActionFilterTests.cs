@@ -17,6 +17,7 @@ namespace PaymentGateway.Tests.Utils.Filters
     public class TrackingActionFilterTests
     {
         [Test]
+        //TEST FOR FILTER AND CHECK IF IT SETS X-RequestTraceId AND X-Duration IN RESPONSE HEADER
         public void OnActionExecutingTest()
         {
             var trackingFilter = new TrackingActionFilter();
@@ -28,10 +29,14 @@ namespace PaymentGateway.Tests.Utils.Filters
             var resultExecutedContext = new ActionExecutedContext(actionContext,
              new List<IFilterMetadata>(), new { });
 
+            // SIMULATING ACTION EXECUTION BY CALL BEFORE AND AFTER EXECUTION 
             trackingFilter.OnActionExecuting(actionExecutingContext);
             trackingFilter.OnActionExecuted(resultExecutedContext);
 
+            // CHECK IF IT SETS X-RequestTraceId 
             Assert.IsNotNull(resultExecutedContext.HttpContext.Response.Headers["X-RequestTraceId"]);
+
+            // CHECK IF IT SETS X-Duration
             Assert.IsNotNull(resultExecutedContext.HttpContext.Response.Headers["X-Duration"]);
 
         }

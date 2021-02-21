@@ -24,7 +24,7 @@ Feature: Retrieve Payment with valid input
             """
         And response body contains
             """
-            "CardNumber":"5500000000000004"
+            "CardNumber":"************0004"
             """
         And response body contains
             """
@@ -53,7 +53,7 @@ Feature: Retrieve Payment with valid input
             """
         And response body contains
             """
-            "Error":"Not Record found for PaymentId : 24e17f20-3807-445a-963c-9b7e821d482a"
+            "Error":"No Record found for PaymentId : 24e17f20-3807-445a-963c-9b7e821d482a"
             """
         And response body contains
             """

@@ -5,14 +5,20 @@ using System.Text.RegularExpressions;
 
 namespace PaymentGateway.Utils.CustomValidationAttributes
 {
-    public class CreditCardExpiryDateAttribute : ValidationAttribute
+    /// <summary>
+    /// CardExpiryDateAttribute class for validate Expiry field
+    /// </summary>
+    public class CardExpiryDateAttribute : ValidationAttribute
     {
-        public CreditCardExpiryDateAttribute()
-        {
-        }
-
+        /// <summary>
+        /// Validation method to validate Card Expiry it should be in formate "MM/YYYY
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="validationContext"></param>
+        /// <returns></returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            //REGEX TO ONLY ALLOW The EXPIRY IN FORMATE MM/YYYY
             Regex rgx = new Regex(@"^(0[1-9]|1[0-2])\/([0-9]{4})$");
             string dateString = (string)value;
             if (dateString != null && rgx.IsMatch(dateString))

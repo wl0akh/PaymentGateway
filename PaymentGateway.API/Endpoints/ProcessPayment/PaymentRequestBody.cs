@@ -4,13 +4,16 @@ using PaymentGateway.Utils.CustomValidationAttributes;
 
 namespace PaymentGateway.API.Endpoints.ProcessPayment
 {
+    /// <summary>
+    /// PaymentRequestBody class to encapsulate payment details from http request body
+    /// </summary>
     public class PaymentRequestBody
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "The cardNumber must not be empty")]
         [RegularExpression(@"^(\d{12,19})$", ErrorMessage = "The cardNumber must be of 12 to 19 digits")]
         public string CardNumber { get; set; }
 
-        [CreditCardExpiryDateAttribute(ErrorMessage = "The expiry must be in future and in the formate: MM/YYYY")]
+        [CardExpiryDateAttribute(ErrorMessage = "The expiry must be in future and in the formate: MM/YYYY")]
         public string Expiry { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The amount must not be empty")]

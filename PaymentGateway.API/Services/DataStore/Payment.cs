@@ -5,6 +5,9 @@ using PaymentGateway.Services.Bank;
 
 namespace PaymentGateway.Services.DataStore
 {
+    /// <summary>
+    /// Payment class to Encapsulate payment  
+    /// </summary>
     public class Payment
     {
 
@@ -21,6 +24,12 @@ namespace PaymentGateway.Services.DataStore
         }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        /// <summary>
+        /// method to Translate PaymentRequestBody to  Payment
+        /// </summary>
+        /// <param name="paymentRequest"></param>
+        /// <param name="bankResponse"></param>
+        /// <returns></returns>
         public static Payment FromPaymentRequest(PaymentRequestBody paymentRequest, BankPayOutResponse bankResponse)
         {
             return new Payment
@@ -34,6 +43,10 @@ namespace PaymentGateway.Services.DataStore
             };
         }
 
+        /// <summary>
+        /// Method to Translate to RetrievePaymentResponse from Payment
+        /// </summary>
+        /// <returns></returns>
         public RetrievePaymentResponse ToRetrievePaymentResponse()
         {
             return new RetrievePaymentResponse

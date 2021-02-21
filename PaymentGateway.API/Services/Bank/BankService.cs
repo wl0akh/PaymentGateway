@@ -9,6 +9,9 @@ using PaymentGateway.Utils.Exceptions;
 
 namespace PaymentGateway.Services.Bank
 {
+    /// <summary>
+    /// BankService class to IBankService Interface to Abstract Bank
+    /// </summary>
     public class BankService : IBankService
     {
         private Uri _url;
@@ -29,6 +32,11 @@ namespace PaymentGateway.Services.Bank
             this._requestTrackingService = requestTrackingService;
         }
 
+        /// <summary>
+        /// PayOutAsync method pay the payment
+        /// </summary>
+        /// <param name="bankPaymentRequest"></param>
+        /// <returns>BankPayOutResponse</returns>
         public async Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, this._url);
@@ -46,14 +54,14 @@ namespace PaymentGateway.Services.Bank
                 var response = await client.SendAsync(request);
                 var body = await response.Content.ReadAsStringAsync();
 
-                this._logger.LogInformation($@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
-                Bank PayOut Successful");
+                this._logger.LogInformation($@"RequestId:{this._requestTrackingService.RequestTraceId} 
+                Bank PayOut Finished");
 
                 return JsonSerializer.Deserialize<BankPayOutResponse>(body);
             }
             catch (JsonException jsonException)
             {
-                this._logger.LogError(jsonException, $@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
+                this._logger.LogError(jsonException, $@"RequestId:{this._requestTrackingService.RequestTraceId} 
                 Bank Service Incompatible");
 
                 throw new BankServiceException("Bank Service Incompatible", jsonException)
@@ -63,7 +71,7 @@ namespace PaymentGateway.Services.Bank
             }
             catch (HttpRequestException httpRequestException)
             {
-                this._logger.LogError(httpRequestException, $@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
+                this._logger.LogError(httpRequestException, $@"RequestId:{this._requestTrackingService.RequestTraceId} 
                 Bank Service Unavailable");
 
                 throw new BankServiceException("Bank Service Unavailable", httpRequestException)

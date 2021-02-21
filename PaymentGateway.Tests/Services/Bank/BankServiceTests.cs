@@ -17,65 +17,38 @@ namespace PaymentGateway.Tests.Services
     [TestFixture]
     public class BankServiceTests
     {
-        [Test]
-        public async Task ExecutePaymentSuccessfulAsync()
+        [TestCase("successful")]
+        [TestCase("unsuccessful")]
+        /// TEST FOR RESPONSES OF BANK SERVICE WHEN IT'S ACCESSIBLE
+        public async Task ExecutePaymentWhenBankServiCeRunningAsync(string responseStatus)
         {
-            var body = GenerateRequestBody(Guid.NewGuid(), "successful");
-            Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var requestTrackingService = new RequestTrackingService();
-            var logger = Mock.Of<ILogger<BankService>>();
-            var bankService = new BankService(
-                requestTrackingService,
-                logger,
-                new Uri("http://BankService_url.io"),
-                httpClientFactory.Object);
+            var body = GenerateRequestBody(Guid.NewGuid(), responseStatus);
+            var httpClientFactory = MockHttpClientFactoryWithResponse(body);
+            var bankService = GetBankService(body, httpClientFactory);
             BankPayOutResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
-            Assert.AreEqual("successful", result.Status);
+            Assert.AreEqual(responseStatus, result.Status);
         }
 
-        [Test]
-        public async Task ExecutePaymentUnSuccessfullAsync()
-        {
-            var body = GenerateRequestBody(Guid.NewGuid(), "unsuccessful");
-            Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var requestTrackingService = new RequestTrackingService();
-            var logger = Mock.Of<ILogger<BankService>>();
-            var bankService = new BankService(
-                requestTrackingService,
-                logger,
-                new Uri("http://BankService_url.io"),
-                httpClientFactory.Object);
-            BankPayOutResponse result = await ExecuteBankService(bankService);
-            Assert.IsInstanceOf<BankPayOutResponse>(result);
-            Assert.IsNotNull(result.PaymentId);
-            Assert.AreEqual("unsuccessful", result.Status);
-        }
-
+        /// TEST FOR RESPONSES OF BANK SERVICE WHEN IT'S ACCESSIBLE RESPONSE BODY IN INVALID
         [Test]
         public void ExecutePaymentWhenResponseInInvalidformate()
         {
             var body = new StringContent("invalid Formate");
             var httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var requestTrackingService = new RequestTrackingService();
-            var logger = Mock.Of<ILogger<BankService>>();
-            var bankService = new BankService(
-                requestTrackingService,
-                logger,
-                new Uri("http://BankService_url.io"),
-                httpClientFactory.Object);
+            var bankService = GetBankService(body, httpClientFactory);
             Assert.ThrowsAsync<BankServiceException>(
                 async () => await ExecuteBankService(bankService)
             );
         }
 
         [Test]
+        /// TEST FOR RESPONSES OF BANK SERVICE WHEN IT'S INACCESSIBLE 
         public void ExecutePaymentWhenBankServiceInaccessible()
         {
-            var url = new Uri("http://BankService_url.io");
-            var handlerMock = new Mock<HttpMessageHandler>();
-            handlerMock
+            var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+            httpMessageHandlerMock
               .Protected()
               .Setup<Task<HttpResponseMessage>>(
                  "SendAsync",
@@ -83,18 +56,29 @@ namespace PaymentGateway.Tests.Services
                  ItExpr.IsAny<CancellationToken>()).Throws(new HttpRequestException());
 
 
-            var httpClient = new HttpClient(handlerMock.Object);
+            var httpClient = new HttpClient(httpMessageHandlerMock.Object);
             var httpClientFactory = new Mock<IHttpClientFactory>();
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
-            var requestTrackingService = new RequestTrackingService();
-            var logger = Mock.Of<ILogger<BankService>>();
-            var bankService = new BankService(requestTrackingService, logger, url, httpClientFactory.Object);
+            var body = GenerateRequestBody(Guid.NewGuid(), "successful");
+            var bankService = GetBankService(body, httpClientFactory);
 
             // Check if it throws BankServiceException when unable to connect
             Assert.ThrowsAsync<BankServiceException>(
             async () => await ExecuteBankService(bankService));
         }
 
+
+        private static BankService GetBankService(StringContent body, Mock<IHttpClientFactory> httpClientFactory)
+        {
+            var requestTrackingService = new RequestTrackingService();
+            var logger = Mock.Of<ILogger<BankService>>();
+            var bankService = new BankService(
+                requestTrackingService,
+                logger,
+                new Uri("http://BankService_url.io"),
+                httpClientFactory.Object);
+            return bankService;
+        }
         private static StringContent GenerateRequestBody(Guid guid, string status)
         {
             return new StringContent(JsonConvert.SerializeObject(

@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using PaymentGateway.API.Services;
 using PaymentGateway.Services.DataStore;
 
 namespace PaymentGateway.Tests.Services.DataStore
@@ -11,6 +13,7 @@ namespace PaymentGateway.Tests.Services.DataStore
     public class DataStoreServiceTests
     {
         [Test]
+        //TEST FOR RESPONSES OF DATASTORE SERVICE WHEN DB ACCESSIBLE 
         public void CreatePaymentWhenDBRunningAsync()
         {
             var options = new DbContextOptionsBuilder<DataStoreDbContext>()
@@ -21,7 +24,9 @@ namespace PaymentGateway.Tests.Services.DataStore
             );
         }
 
+
         [Test]
+        //TEST FOR RESPONSES OF DATASTORE SERVICE WHEN DB INACCESSIBLE 
         public void CreatePaymentWhenNoDbAsync()
         {
             var expectedPayment = GeneratePayment();
@@ -30,6 +35,7 @@ namespace PaymentGateway.Tests.Services.DataStore
             );
         }
 
+        //TEST FOR RESPONSES OF DATASTORE SERVICE WHEN DB ACCESSIBLE 
         [Test]
         public async Task GetPaymentWhenExistAsync()
         {
@@ -49,6 +55,7 @@ namespace PaymentGateway.Tests.Services.DataStore
         }
 
         [Test]
+        //TEST FOR RESPONSES OF DATASTORE SERVICE WHEN DB INACCESSIBLE 
         public async Task GetPaymentWhenNotExistAsync()
         {
             var options = new DbContextOptionsBuilder<DataStoreDbContext>()
@@ -61,7 +68,11 @@ namespace PaymentGateway.Tests.Services.DataStore
         {
             using (var context = new DataStoreDbContext(options))
             {
-                var dataStoreService = new DataStoreService(context);
+                var dataStoreService = new DataStoreService(
+                    context,
+                    Mock.Of<ILogger<DataStoreService>>(),
+                    Mock.Of<RequestTrackingService>()
+                    );
                 return await dataStoreService.GetPaymentAsync(paymentId);
             }
         }
@@ -70,7 +81,11 @@ namespace PaymentGateway.Tests.Services.DataStore
         {
             using (var context = new DataStoreDbContext(options))
             {
-                var dataStoreService = new DataStoreService(context);
+                var dataStoreService = new DataStoreService(
+                    context,
+                    Mock.Of<ILogger<DataStoreService>>(),
+                    Mock.Of<RequestTrackingService>()
+                    );
                 await dataStoreService.CreateAsync(expectedPayment);
             }
         }
