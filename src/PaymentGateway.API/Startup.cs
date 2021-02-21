@@ -30,7 +30,7 @@ namespace PaymentGateway.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<RequestTrackingService>();
+            services.AddScoped<RequestTrackingService>();
             services.AddControllers()
             .AddNewtonsoftJson(options => options.UseMemberCasing())
             .ConfigureApiBehaviorOptions(
@@ -44,9 +44,9 @@ namespace PaymentGateway.API
                 optionBuilder => optionBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"))
             );
             services.AddScoped<IDataStoreService, DataStoreService>();
-            services.AddTransient<IPayoutCommand, PayoutCommand>();
-            services.AddTransient<IRetrievePaymentQuery, RetrievePaymentQuery>();
-            services.AddTransient<IBankService>(
+            services.AddScoped<IPayoutCommand, PayoutCommand>();
+            services.AddScoped<IRetrievePaymentQuery, RetrievePaymentQuery>();
+            services.AddScoped<IBankService>(
                 s => new BankService(
                     s.GetService<RequestTrackingService>(),
                     s.GetService<ILogger<BankService>>(),
