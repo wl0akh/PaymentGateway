@@ -1,0 +1,39 @@
+version: "3"
+services:
+  MounteBank:
+    container_name: MounteBank
+    image: jkris/mountebank:latest
+    restart: unless-stopped
+    volumes:
+      - ./MountBankBankServiceImposters.json:/MountBankBankServiceImposters.json
+    ports:
+      - 2525:2525
+      - 4545:4545
+    command: --configfile /MountBankBankServiceImposters.json --allowInjection
+  
+  MYSQL:
+    container_name: MYSQL
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_HOST: "%"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+  
+  PaymentGateway:
+    container_name: PaymentGateway
+    image: paymen_gateway
+    restart: unless-stopped
+    depends_on:
+      - MYSQL
+      - MounteBank
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      BANK_SERVICE_URL: "http://MounteBank:4545/payments"
+      MYSQL_CONNECTION_STRING: "server=MYSQL;uid=root;pwd=admin;database=PaymentGateway"
+    command: dotnet PaymentGateway.API.dll
+    ports:
+      - 80:80

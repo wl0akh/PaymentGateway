@@ -1,0 +1,30 @@
+{
+    "port": 4545,
+    "protocol": "http",
+    "stubs": [
+        {
+            "predicates": [
+                {
+                    "equals": {
+                        "method": "POST",
+                        "path": "/payments"
+                    }
+                }
+            ],
+            "responses": [
+                {
+                    "inject": "(config) => {\n config.logger.info('origin called'); function createUUID() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16);}); } return {\n headers: {\n 'Content-Type': 'application/json'\n },\n body: JSON.stringify({ PaymentId: createUUID(), Status: \"successful\" })\n };\n }"
+                }
+            ]
+        },
+        {
+            "responses": [
+                {
+                    "is": {
+                        "statusCode": 404
+                    }
+                }
+            ]
+        }
+    ]
+}
