@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.API.Endpoints.Queries;
+using PaymentGateway.API.Utils.Filters;
 
 namespace PaymentGateway.API.Endpoints.RetrievePayment
 {
@@ -23,6 +24,7 @@ namespace PaymentGateway.API.Endpoints.RetrievePayment
         /// <returns>Task<ActionResult<RetrievePaymentResponse>></returns>
         [HttpGet("/api/payments/{PaymentId}")]
         [Produces("application/json")]
+        [TrackingActionFilter]
         public async Task<ActionResult<RetrievePaymentResponse>> RetrievePaymentAsync(RetrievePaymentRequest retrievePaymentRequest)
         {
             return await _retrievePaymentQuery.ExecuteAsync(retrievePaymentRequest);
