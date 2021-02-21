@@ -39,11 +39,11 @@ Steps to use the Payment service
 ```
 
 info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      **RequestId:de203892-0c61-4bb0-9a1f-75796e087c6e**
+      ***RequestId:a865ac81-6d4b-4c1b-9669-4a6e8d6da16e***
                   Started for controller:RetrievePayment and action:RetrievePayment
 info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      **RequestId:de203892-0c61-4bb0-9a1f-75796e087c6e**
-                  Finished in Duration: 0.0443 Milliseconds
+      ***RequestId:a865ac81-6d4b-4c1b-9669-4a6e8d6da16e***
+                  Finished in Duration: 14.3268 Milliseconds
 
 
 
@@ -51,12 +51,12 @@ info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
 
 
 info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      **RequestId:eed4e2fe-8060-40ab-9a88-14d9dcb6b7f3***
+      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
                   Started for controller:RetrievePayment and action:RetrievePayment
 warn: PaymentGateway.API.Endpoints.RetrievePayment.RetrievePaymentController[0]
-      **RequestId:eed4e2fe-8060-40ab-9a88-14d9dcb6b7f3***
-                      Payment details Not Found in DB for PaymentId:daf8ab5a-200e-4ace-be69-abe0f644841d
+      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
+                      Payment details Not Found in DB for PaymentId:0cb245f9-0c6c-458d-9ad4-cb5cbd33cbba
 info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      **RequestId:eed4e2fe-8060-40ab-9a88-14d9dcb6b7f3***
-                  Finished in Duration: 0.0663 Milliseconds
+      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
+                  Finished in Duration: 8.4638 Milliseconds
 ```

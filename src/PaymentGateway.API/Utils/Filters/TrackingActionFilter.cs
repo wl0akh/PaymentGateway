@@ -30,6 +30,7 @@ namespace PaymentGateway.API.Utils.Filters
             .GetService(typeof(RequestTrackingService));
 
             this._stopwatch = new Stopwatch();
+            this._stopwatch.Start();
 
             this._logger.LogInformation($@"RequestId:{this._requestTrackingService.RequestTraceId} 
             Started for controller:{context.RouteData.Values["controller"]} and action:{context.RouteData.Values["action"]}");
@@ -42,7 +43,7 @@ namespace PaymentGateway.API.Utils.Filters
         /// <param name="context"></param>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            this._stopwatch.Start();
+            this._stopwatch.Stop();
 
             //SET Duration i.e time take to process the request in Response header"
             context.HttpContext.Response.Headers.Add("X-Duration", $"{ this._stopwatch.Elapsed.TotalMilliseconds}");
