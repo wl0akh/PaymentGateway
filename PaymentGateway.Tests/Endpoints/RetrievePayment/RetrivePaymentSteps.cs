@@ -1,68 +1,41 @@
+using System;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using PaymentGateway.Services.DataStore;
 using TechTalk.SpecFlow;
 
 namespace PaymentGateway.Tests.Endpoints.RetrievePayment
 {
     [Binding]
-    [Scope(Feature = "Retrieve Payment")]
+    [Scope(Tag = "RetrievePayment")]
     public class RetrivePaymentSteps
     {
-        private readonly ScenarioContext _scenarioContext;
+        private readonly EndpointTestContext _context;
+        private Guid _paymentId;
 
-        public RetrivePaymentSteps(ScenarioContext scenarioContext)
+        public RetrivePaymentSteps(EndpointTestContext context)
         {
-            _scenarioContext = scenarioContext;
+            this._context = context;
         }
+
         [Given(@"PaymentId as (.*) is provided")]
-        public void GivenPaymentIdAsIsProvided(string cardNumber)
+        public void GivenPaymentIdAsIsProvided(string paymentId)
         {
-
+            Guid.TryParse(paymentId, out this._paymentId);
         }
 
-        [Given(@"record with PaymentId (.*) in data store")]
-        public void GivenRecordWithPaymentIdInDataStore(string isExist)
+        [Given(@"following payment record exists in data store")]
+        public async Task GivenRecordWithPaymentIdInDataStoreAsync(string paymentRecord)
         {
-
+            var payment = JsonConvert.DeserializeObject<Payment>(paymentRecord);
+            await this._context.CreatePaymentInDataStore(payment);
         }
-
-        [Given(@"request header has (.*) Authorization token")]
-        public void GivenRequestHeaderHasAuthorizationToken(string isValid)
+        [Given(@"record with PaymentId (.*) does not exists in data store")]
+        public async Task GivenRecordWithPaymentIdInNotExistsDataStoreAsync(string paymentId)
         {
-
-        }
-
-        [When(@"a GET is called on (.*)")]
-        public void WhenAGetIsCalledOnPath(string path)
-        {
-
-        }
-
-        [Then(@"it returns response with status code (.*)")]
-        public void ThenItReturnsResponseWithStatusCodeBadRequest(string code)
-        {
-
-        }
-
-        [Then(@"response body indicate Authorization is invalid")]
-        public void ThenResponseBodyIndicateAuthorizationIsInvalid()
-        {
-
-        }
-
-        [Then(@"response body indicate record with (.*) not found")]
-        public void ThenResponseBodyIndicateRecordWithGuidNotFound(string guid)
-        {
-
-        }
-
-        [Then(@"response body (.*) (.*) Value")]
-        public void ThenResponseBodyContainsPaymentFieldAndItsNotNull(string isConatins, string field)
-        {
-
-        }
-
-        [Then(@"response body (.*) Id as (.*)")]
-        public void ThenResponseBodyContainsIdAsDefd_Add(string isContains, string paymentId)
-        {
+            var result = await this._context.GetPaymentAsync(Guid.Parse(paymentId));
+            Assert.IsNull(result);
         }
     }
 }

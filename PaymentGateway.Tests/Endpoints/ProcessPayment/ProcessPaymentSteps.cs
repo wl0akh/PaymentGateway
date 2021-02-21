@@ -18,21 +18,6 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
             _context = context;
         }
 
-        [BeforeFeature]
-        public static void SetUpRegisteredJwt()
-        {
-            Environment.SetEnvironmentVariable("MOUNT_BANK_URL", "http://localhost:2525");
-            Environment.SetEnvironmentVariable("BANK_SERVICE_URL", "http://localhost:4545/payments");
-            Environment.SetEnvironmentVariable("MYSQL_CONNECTION_STRING", "server=localhost;uid=root;pwd=admin;database=TestPaymentGateway");
-        }
-
-        [AfterScenario("ProcessPayment")]
-        private async Task TearDownAsync()
-        {
-            await this._context.DropDBAsync();
-            await this._context.TearDownBankService();
-        }
-
         [When(@"Bank Service Responds as")]
         public async Task WhenBankTransactionIsAsync(string responseBody)
         {

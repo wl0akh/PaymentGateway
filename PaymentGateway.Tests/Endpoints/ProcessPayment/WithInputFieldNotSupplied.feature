@@ -9,7 +9,10 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with "" key
+        And response body contains
+            """
+            "A non-empty request body is required."
+            """
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field CardNumber is not provided
@@ -24,7 +27,10 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with CardNumber key
+        And response body contains
+            """
+            "The cardNumber must not be empty"
+            """
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field Expiry is not provided
@@ -39,7 +45,10 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with Expiry key
+        And response body contains
+            """
+            "The expiry must be in future and in the formate: MM/YYYY"
+            """
         And payment is not recorded in data store
 
     Scenario: Process Payment when required request field Amount is not provided
@@ -54,7 +63,10 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with Amount key
+        And response body contains
+            """
+            "The amount must not be empty"
+            """
         And payment is not recorded in data store
 
 
@@ -70,5 +82,8 @@ Feature: WithInput Field NotSupplied
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with CVV key
+        And response body contains
+            """
+            "The cvv must not be empty"
+            """
         And payment is not recorded in data store

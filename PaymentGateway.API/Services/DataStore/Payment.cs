@@ -1,5 +1,6 @@
 using System;
 using PaymentGateway.API.Endpoints.ProcessPayment;
+using PaymentGateway.API.Endpoints.RetrievePayment;
 using PaymentGateway.Services.Bank;
 
 namespace PaymentGateway.Services.DataStore
@@ -20,7 +21,7 @@ namespace PaymentGateway.Services.DataStore
         }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public static Payment FromPaymentRequest(PaymentRequest paymentRequest, BankPayOutResponse bankResponse)
+        public static Payment FromPaymentRequest(PaymentRequestBody paymentRequest, BankPayOutResponse bankResponse)
         {
             return new Payment
             {
@@ -30,6 +31,19 @@ namespace PaymentGateway.Services.DataStore
                 Expiry = paymentRequest.Expiry,
                 Amount = paymentRequest.Amount,
                 Currency = paymentRequest.Currency
+            };
+        }
+
+        public RetrievePaymentResponse ToRetrievePaymentResponse()
+        {
+            return new RetrievePaymentResponse
+            {
+                PaymentId = this.PaymentId,
+                CardNumber = this.CardNumber,
+                Status = this.Status,
+                Expiry = this.Expiry,
+                Amount = (decimal)this.Amount,
+                Currency = this.Currency
             };
         }
     }

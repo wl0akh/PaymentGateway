@@ -23,14 +23,14 @@ namespace PaymentGateway.API.Commands
             _logger = logger;
         }
 
-        public async Task<ActionResult<PaymentResponse>> ExecuteAsync(PaymentRequest paymentRequest)
+        public async Task<ActionResult<ProcessPaymentResponse>> ExecuteAsync(ProcessPaymentRequest paymentRequest)
         {
             try
             {
-                var bankResponse = await this._bank.PayOutAsync(BankPayOutRequest.FromPaymentRequest(paymentRequest));
+                var bankResponse = await this._bank.PayOutAsync(BankPayOutRequest.FromPaymentRequest(paymentRequest.paymentRequestBody));
                 var newPaymentId = bankResponse.PaymentId;
-                await this._dataStore.CreateAsync(Payment.FromPaymentRequest(paymentRequest, bankResponse));
-                return new CreatedResult($"/api/payments/{newPaymentId}", new PaymentResponse { PaymentId = newPaymentId });
+                await this._dataStore.CreateAsync(Payment.FromPaymentRequest(paymentRequest.paymentRequestBody, bankResponse));
+                return new CreatedResult($"/api/payments/{newPaymentId}", new ProcessPaymentResponse { PaymentId = newPaymentId });
             }
             catch (BankServiceException ex)
             {

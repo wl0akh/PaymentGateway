@@ -11,7 +11,7 @@ namespace PaymentGateway.Services.Bank
         public string Currency { get; set; }
         public string CVV { get; set; }
 
-        public static BankPayOutRequest FromPaymentRequest(PaymentRequest paymentRequest)
+        public static BankPayOutRequest FromPaymentRequest(PaymentRequestBody paymentRequest)
         {
             return new BankPayOutRequest
             {

@@ -19,6 +19,7 @@ namespace PaymentGateway.Tests.Endpoints
         public HttpClient Client { get; set; }
         public HttpRequestMessage Request { get; set; }
         public HttpResponseMessage Response { get; set; }
+        public string ResponseBodyString { get; set; }
         public DbContextOptions<DataStoreDbContext> DBOptions { get; set; }
         public Uri BankServiceUri { get; set; }
         private MountebankClient _mountebankClient;
@@ -56,11 +57,18 @@ namespace PaymentGateway.Tests.Endpoints
             using var dbContext = new DataStoreDbContext(this.DBOptions);
             return await dbContext.Payments.CountAsync<Payment>();
         }
+        public async Task CreatePaymentInDataStore(Payment payment)
+        {
+            using var dbContext = new DataStoreDbContext(this.DBOptions);
+            await dbContext.Payments.AddAsync(payment);
+            await dbContext.SaveChangesAsync();
+        }
 
         public async Task<Payment> GetPaymentAsync(Guid Id)
         {
             using var dbContext = new DataStoreDbContext(this.DBOptions);
-            return await dbContext.Payments.FirstAsync<Payment>(r => r.PaymentId == Id);
+            return await dbContext.Payments.Where<Payment>(r => r.PaymentId == Id)
+            .FirstOrDefaultAsync<Payment>();
         }
         public async Task DropDBAsync()
         {

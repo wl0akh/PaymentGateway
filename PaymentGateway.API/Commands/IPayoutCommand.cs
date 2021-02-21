@@ -6,6 +6,6 @@ namespace PaymentGateway.API.Commands
 {
     public interface IPayoutCommand
     {
-        Task<ActionResult<PaymentResponse>> ExecuteAsync(PaymentRequest paymentRequest);
+        Task<ActionResult<ProcessPaymentResponse>> ExecuteAsync(ProcessPaymentRequest paymentRequest);
     }
 }

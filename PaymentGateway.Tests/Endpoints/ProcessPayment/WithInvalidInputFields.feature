@@ -15,7 +15,10 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with CardNumber key
+        And response body contains
+            """
+            "The cardNumber must be of 12 to 19 digits"
+            """
         And payment is not recorded in data store
         Examples:
             | CardNumber?           |
@@ -23,8 +26,6 @@ Feature: With Invalid Input Fields
             | 55000000000000000041  |
             #Length less than 12
             | 55000000000           |
-            #Empty string
-            |                       |
             #Contains String
             | 55000A0A09000090004   |
             #Contains space
@@ -42,14 +43,15 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with Expiry key
+        And response body contains
+            """
+            "The expiry must be in future and in the formate: MM/YYYY"
+            """
         And payment is not recorded in data store
         Examples:
             | Expiry?  |
             #Expiry has passed
             | 12/1990  |
-            #Empty string
-            |          |
             #Month value more than 12
             | 13/2024  |
             #Month value less than 1
@@ -59,27 +61,24 @@ Feature: With Invalid Input Fields
             #Year value length more than 4
             | 00/20225 |
 
-    Scenario Outline: Process Payment when invalid Amount is provided
+    Scenario: Process Payment when invalid Amount is provided
         Given a request with body as
             """
             {
                 "CardNumber": "5500000000000004",
                 "Expiry": "12/2024",
-                "Amount": "<Amount?>",
+                "Amount": "4FH",
                 "Currency": "GBP",
                 "CVV": "123"
             }
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with Amount key
+        And response body contains
+            """
+            Could not convert string to decimal
+            """
         And payment is not recorded in data store
-        Examples:
-            | Amount? |
-            #Empty string
-            |         |
-            #Contains String
-            | 4FH     |
 
     Scenario Outline: Process Payment when invalid Currency is provided
         Given a request with body as
@@ -94,7 +93,10 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with Currency key
+        And response body contains
+            """
+            "The currency must be 3 letter string"
+            """
         And payment is not recorded in data store
         Examples:
             | Currency? |
@@ -120,7 +122,10 @@ Feature: With Invalid Input Fields
             """
         When a POST is called on /api/payments
         Then it returns response with status code BadRequest
-        And response body contain value with CVV key
+        And response body contains
+            """
+            "The cvv must 3 digits"
+            """
         And payment is not recorded in data store
         Examples:
             | CVV  |

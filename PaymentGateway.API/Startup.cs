@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PaymentGateway.API.Commands;
+using PaymentGateway.API.Endpoints.Queries;
+using PaymentGateway.API.Services;
 
 namespace PaymentGateway.API
 {
@@ -28,11 +30,13 @@ namespace PaymentGateway.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<RequestTrackingService>();
             services.AddControllers()
             .AddNewtonsoftJson(options => options.UseMemberCasing())
             .ConfigureApiBehaviorOptions(
                 options =>
                 {
+                    options.SuppressInferBindingSourcesForParameters = true;
                     options.InvalidModelStateResponseFactory = ((c) => new BadRequestObjectResult(c.ModelState));
                 }
             );
@@ -41,8 +45,11 @@ namespace PaymentGateway.API
             );
             services.AddScoped<IDataStoreService, DataStoreService>();
             services.AddTransient<IPayoutCommand, PayoutCommand>();
+            services.AddTransient<IRetrievePaymentQuery, RetrievePaymentQuery>();
             services.AddTransient<IBankService>(
                 s => new BankService(
+                    s.GetService<RequestTrackingService>(),
+                    s.GetService<ILogger<BankService>>(),
                         new Uri(Environment.GetEnvironmentVariable("BANK_SERVICE_URL")),
                         s.GetService<IHttpClientFactory>()
                      )
@@ -57,8 +64,9 @@ namespace PaymentGateway.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                dataStoreDbContext.Database.EnsureCreated();
             }
-            dataStoreDbContext.Database.EnsureCreated();
+            dataStoreDbContext.Database.Migrate();
             app.UseRouting();
             app.UseExceptionHandler(
                 a => a.Run(async context =>

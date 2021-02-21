@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using PaymentGateway.API.Services;
 using PaymentGateway.Utils.Exceptions;
 
 namespace PaymentGateway.Services.Bank
@@ -11,11 +13,20 @@ namespace PaymentGateway.Services.Bank
     {
         private Uri _url;
         private IHttpClientFactory _clientFactory;
+        private ILogger<BankService> _logger;
+        private RequestTrackingService _requestTrackingService;
 
-        public BankService(Uri url, IHttpClientFactory clientFactory)
+        public BankService(
+            RequestTrackingService requestTrackingService,
+            ILogger<BankService> logger,
+            Uri url,
+            IHttpClientFactory clientFactory
+            )
         {
-            this._url = url;
             this._clientFactory = clientFactory;
+            this._url = url;
+            this._logger = logger;
+            this._requestTrackingService = requestTrackingService;
         }
 
         public async Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest)
@@ -34,10 +45,17 @@ namespace PaymentGateway.Services.Bank
             {
                 var response = await client.SendAsync(request);
                 var body = await response.Content.ReadAsStringAsync();
+
+                this._logger.LogInformation($@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
+                Bank PayOut Successful");
+
                 return JsonSerializer.Deserialize<BankPayOutResponse>(body);
             }
             catch (JsonException jsonException)
             {
+                this._logger.LogError(jsonException, $@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
+                Bank Service Incompatible");
+
                 throw new BankServiceException("Bank Service Incompatible", jsonException)
                 {
                     RequestTraceId = Guid.NewGuid().ToString()
@@ -45,6 +63,9 @@ namespace PaymentGateway.Services.Bank
             }
             catch (HttpRequestException httpRequestException)
             {
+                this._logger.LogError(httpRequestException, $@"RequestTraceId: {this._requestTrackingService.RequestTraceId} 
+                Bank Service Unavailable");
+
                 throw new BankServiceException("Bank Service Unavailable", httpRequestException)
                 {
                     RequestTraceId = Guid.NewGuid().ToString()

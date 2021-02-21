@@ -9,21 +9,6 @@ services:
       - 2525:2525
       - 4545:4545
     command: --configfile /MountBankBankServiceImposters.json --allowInjection
-
-  PaymentGatewayTest:
-    container_name: PaymentGatewayTest
-    image: mcr.microsoft.com/dotnet/sdk:3.1
-    depends_on:
-      - MounteBank
-    ports:
-      - 5000:5000
-    volumes:
-      - ./:/app
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - BANK_SERVICE_URL=http://mountebank:4545/payments
-      - MYSQL_CONNECTION_STRING="server=MYSQL;uid=root;pwd=admin;database=PaymentGateway"
-    command: "dotnet run --project app/PaymentGateway.API/PaymentGateway.API.csproj"
   
   MYSQL:
     container_name: MYSQL

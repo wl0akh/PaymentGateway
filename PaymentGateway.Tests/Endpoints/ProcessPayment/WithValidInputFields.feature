@@ -44,8 +44,6 @@ Feature: With Valid Input Fields
             | 0.00    | GBP       | successful   | GBP                 |
             #BankTransection unsuccessful
             | 24.00   | USD       | unsuccessful | USD                 |
-            #BankTransection not working
-            | 24.00   | USD       | not working  | USD                 |
 
     Scenario: Process Payment when Bank Service is inaccessible
         Given a request with body as
@@ -61,7 +59,10 @@ Feature: With Valid Input Fields
         When Bank Service is inaccessible
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And response body contain value with Bank Service Unavailable key
+        And response body contains
+            """
+            "Error":"Bank Service Unavailable"
+            """
         And payment is not recorded in data store
 
     Scenario: Process Payment when Bank Service response not valid
@@ -81,7 +82,10 @@ Feature: With Valid Input Fields
             """
         And a POST is called on /api/payments
         Then it returns response with status code ServiceUnavailable
-        And response body contain value with Bank Service Incompatible key
+        And response body contains
+            """
+            "Error":"Bank Service Incompatible"
+            """
         And payment is not recorded in data store
 
     Scenario: Process Payment when Currency is not supplyed

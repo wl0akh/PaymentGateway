@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,8 @@ namespace PaymentGateway.Services.DataStore
 
         public async Task<Payment> GetPaymentAsync(Guid paymentId)
         {
-            return await this._context.Payments.SingleAsync(p => (p.PaymentId == paymentId));
+            return await this._context.Payments.Where(r => r.PaymentId == paymentId)
+            .FirstOrDefaultAsync<Payment>();
         }
     }
 }

@@ -1,12 +1,14 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using PaymentGateway.API.Services;
 using PaymentGateway.Services.Bank;
 using PaymentGateway.Utils.Exceptions;
 
@@ -20,7 +22,13 @@ namespace PaymentGateway.Tests.Services
         {
             var body = GenerateRequestBody(Guid.NewGuid(), "successful");
             Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
+            var requestTrackingService = new RequestTrackingService();
+            var logger = Mock.Of<ILogger<BankService>>();
+            var bankService = new BankService(
+                requestTrackingService,
+                logger,
+                new Uri("http://BankService_url.io"),
+                httpClientFactory.Object);
             BankPayOutResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
@@ -32,7 +40,13 @@ namespace PaymentGateway.Tests.Services
         {
             var body = GenerateRequestBody(Guid.NewGuid(), "unsuccessful");
             Mock<IHttpClientFactory> httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
+            var requestTrackingService = new RequestTrackingService();
+            var logger = Mock.Of<ILogger<BankService>>();
+            var bankService = new BankService(
+                requestTrackingService,
+                logger,
+                new Uri("http://BankService_url.io"),
+                httpClientFactory.Object);
             BankPayOutResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
@@ -44,7 +58,13 @@ namespace PaymentGateway.Tests.Services
         {
             var body = new StringContent("invalid Formate");
             var httpClientFactory = MockHttpClientFactoryWithResponse(body);
-            var bankService = new BankService(new Uri("http://BankService_url.io"), httpClientFactory.Object);
+            var requestTrackingService = new RequestTrackingService();
+            var logger = Mock.Of<ILogger<BankService>>();
+            var bankService = new BankService(
+                requestTrackingService,
+                logger,
+                new Uri("http://BankService_url.io"),
+                httpClientFactory.Object);
             Assert.ThrowsAsync<BankServiceException>(
                 async () => await ExecuteBankService(bankService)
             );
@@ -66,8 +86,9 @@ namespace PaymentGateway.Tests.Services
             var httpClient = new HttpClient(handlerMock.Object);
             var httpClientFactory = new Mock<IHttpClientFactory>();
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
-            var bankService = new BankService(url, httpClientFactory.Object);
+            var requestTrackingService = new RequestTrackingService();
+            var logger = Mock.Of<ILogger<BankService>>();
+            var bankService = new BankService(requestTrackingService, logger, url, httpClientFactory.Object);
 
             // Check if it throws BankServiceException when unable to connect
             Assert.ThrowsAsync<BankServiceException>(
@@ -76,7 +97,7 @@ namespace PaymentGateway.Tests.Services
 
         private static StringContent GenerateRequestBody(Guid guid, string status)
         {
-            return new StringContent(JsonSerializer.Serialize<BankPayOutResponse>(
+            return new StringContent(JsonConvert.SerializeObject(
                     new BankPayOutResponse
                     {
                         PaymentId = guid,

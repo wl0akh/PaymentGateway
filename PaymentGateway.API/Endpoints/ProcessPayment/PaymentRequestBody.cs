@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Utils.CustomValidationAttributes;
 
 namespace PaymentGateway.API.Endpoints.ProcessPayment
 {
-    public class PaymentRequest
+    public class PaymentRequestBody
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "The cardNumber must not be empty")]
         [RegularExpression(@"^(\d{12,19})$", ErrorMessage = "The cardNumber must be of 12 to 19 digits")]
         public string CardNumber { get; set; }
-
 
         [CreditCardExpiryDateAttribute(ErrorMessage = "The expiry must be in future and in the formate: MM/YYYY")]
         public string Expiry { get; set; }

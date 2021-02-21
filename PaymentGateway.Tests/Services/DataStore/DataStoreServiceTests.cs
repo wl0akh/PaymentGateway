@@ -49,12 +49,12 @@ namespace PaymentGateway.Tests.Services.DataStore
         }
 
         [Test]
-        public void GetPaymentWhenNotExistAsync()
+        public async Task GetPaymentWhenNotExistAsync()
         {
             var options = new DbContextOptionsBuilder<DataStoreDbContext>()
                 .UseInMemoryDatabase(databaseName: "DataStoreDbContext").Options;
 
-            Assert.ThrowsAsync<InvalidOperationException>(async () => await GetRecord(options, Guid.NewGuid()));
+            Assert.IsNull(await GetRecord(options, Guid.NewGuid()));
         }
 
         private static async Task<Payment> GetRecord(DbContextOptions<DataStoreDbContext> options, Guid paymentId)
