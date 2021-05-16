@@ -42,7 +42,7 @@ namespace PaymentGateway.Tests.Endpoints.ProcessPayment
             }
             if (isRecorded == "is not")
             {
-                var actualValue = payment.GetType().GetProperty(propName);
+                var actualValue = payment.GetType().GetProperty(propName).GetValue(payment, null);
                 Assert.AreEqual(null, actualValue);
             }
         }

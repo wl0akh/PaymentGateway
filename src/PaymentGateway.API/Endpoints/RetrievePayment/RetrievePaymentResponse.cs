@@ -1,5 +1,6 @@
 using System;
 using PaymentGateway.Utils.Helpers;
+using static PaymentGateway.Domain.Entities.Payment;
 
 namespace PaymentGateway.API.Endpoints.RetrievePayment
 {
@@ -16,7 +17,7 @@ namespace PaymentGateway.API.Endpoints.RetrievePayment
             get => MaskHelper.Mask(_cardNumber);
             set => _cardNumber = value;
         }
-        public string Status { get; set; }
+        public Status Status { get; set; }
         public string Expiry { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; }

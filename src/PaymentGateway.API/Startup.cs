@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PaymentGateway.Services.Bank;
-using PaymentGateway.Services.DataStore;
 using Microsoft.EntityFrameworkCore;
 using PaymentGateway.API.Endpoints;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using PaymentGateway.API.Commands;
 using PaymentGateway.API.Endpoints.Queries;
 using PaymentGateway.API.Services;
+using PaymentGateway.Services;
 
 namespace PaymentGateway.API
 {
@@ -43,7 +43,6 @@ namespace PaymentGateway.API
             services.AddDbContext<DataStoreDbContext>(
                 optionBuilder => optionBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"))
             );
-            services.AddScoped<IDataStoreService, DataStoreService>();
             services.AddScoped<IPayoutCommand, PayoutCommand>();
             services.AddScoped<IRetrievePaymentQuery, RetrievePaymentQuery>();
             services.AddScoped<IBankService>(

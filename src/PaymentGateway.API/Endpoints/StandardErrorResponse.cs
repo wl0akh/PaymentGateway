@@ -1,6 +1,3 @@
-using System;
-using PaymentGateway.Utils.Exceptions;
-
 namespace PaymentGateway.API.Endpoints
 {
     /// <summary>

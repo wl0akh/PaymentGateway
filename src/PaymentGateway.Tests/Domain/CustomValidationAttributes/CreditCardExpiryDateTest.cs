@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NUnit.Framework;
-using PaymentGateway.Utils.CustomValidationAttributes;
+using PaymentGateway.Domain.CustomValidationAttributes;
 
 namespace PaymentGateway.Tests.Utils.CustomValidationAttributes
 {

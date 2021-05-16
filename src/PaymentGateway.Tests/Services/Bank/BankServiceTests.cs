@@ -9,18 +9,20 @@ using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using PaymentGateway.API.Services;
+using PaymentGateway.Domain.Entities;
 using PaymentGateway.Services.Bank;
 using PaymentGateway.Utils.Exceptions;
+using static PaymentGateway.Domain.Entities.Payment;
 
 namespace PaymentGateway.Tests.Services
 {
     [TestFixture]
     public class BankServiceTests
     {
-        [TestCase("successful")]
-        [TestCase("unsuccessful")]
+        [TestCase(Status.APPROVED)]
+        [TestCase(Status.DECLINED)]
         /// TEST FOR RESPONSES OF BANK SERVICE WHEN IT'S ACCESSIBLE
-        public async Task ExecutePaymentWhenBankServiCeRunningAsync(string responseStatus)
+        public async Task ExecutePaymentWhenBankServiCeRunningAsync(Status responseStatus)
         {
             var body = GenerateRequestBody(Guid.NewGuid(), responseStatus);
             var httpClientFactory = MockHttpClientFactoryWithResponse(body);
@@ -28,7 +30,7 @@ namespace PaymentGateway.Tests.Services
             BankPayOutResponse result = await ExecuteBankService(bankService);
             Assert.IsInstanceOf<BankPayOutResponse>(result);
             Assert.IsNotNull(result.PaymentId);
-            Assert.AreEqual(responseStatus, result.Status);
+            Assert.AreEqual(responseStatus, result.PaymentStatus);
         }
 
         /// TEST FOR RESPONSES OF BANK SERVICE WHEN IT'S ACCESSIBLE RESPONSE BODY IN INVALID
@@ -59,7 +61,7 @@ namespace PaymentGateway.Tests.Services
             var httpClient = new HttpClient(httpMessageHandlerMock.Object);
             var httpClientFactory = new Mock<IHttpClientFactory>();
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
-            var body = GenerateRequestBody(Guid.NewGuid(), "successful");
+            var body = GenerateRequestBody(Guid.NewGuid(), Status.APPROVED);
             var bankService = GetBankService(body, httpClientFactory);
 
             // Check if it throws BankServiceException when unable to connect
@@ -79,13 +81,13 @@ namespace PaymentGateway.Tests.Services
                 httpClientFactory.Object);
             return bankService;
         }
-        private static StringContent GenerateRequestBody(Guid guid, string status)
+        private static StringContent GenerateRequestBody(Guid guid, Status status)
         {
             return new StringContent(JsonConvert.SerializeObject(
                     new BankPayOutResponse
                     {
                         PaymentId = guid,
-                        Status = status
+                        PaymentStatus = status
                     }
                     ));
         }
@@ -93,14 +95,9 @@ namespace PaymentGateway.Tests.Services
         private static Task<BankPayOutResponse> ExecuteBankService(BankService bankService)
         {
             var futureDate = DateTime.Now.AddDays(30);
-            return bankService.PayOutAsync(new BankPayOutRequest
-            {
-                CardNumber = "",
-                Expiry = $"{futureDate.Month:00}/{futureDate.Year}",
-                Amount = 25,
-                Currency = "GBP",
-                CVV = "123"
-            });
+            return bankService.PayOutAsync(
+                new Payment("GBP", "123", 25, $"{futureDate.Month:00}/{futureDate.Year}", "")
+                );
         }
 
         private static Mock<IHttpClientFactory> MockHttpClientFactoryWithResponse(StringContent content)

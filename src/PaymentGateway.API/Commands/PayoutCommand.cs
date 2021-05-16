@@ -1,13 +1,16 @@
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PaymentGateway.API.Endpoints;
 using PaymentGateway.API.Endpoints.ProcessPayment;
 using PaymentGateway.API.Services;
+using PaymentGateway.Domain.Entities;
+using PaymentGateway.Services;
 using PaymentGateway.Services.Bank;
-using PaymentGateway.Services.DataStore;
 using PaymentGateway.Utils.Exceptions;
+using PaymentGateway.Utils.Helpers;
 
 namespace PaymentGateway.API.Commands
 {
@@ -16,22 +19,22 @@ namespace PaymentGateway.API.Commands
     /// </summary>
     public class PayoutCommand : IPayoutCommand
     {
-        private readonly IDataStoreService _dataStore;
         private readonly IBankService _bank;
         private readonly ILogger<PayoutCommand> _logger;
         private readonly RequestTrackingService _requestTrackingService;
+        private DataStoreDbContext _dataStoreDbContext;
 
         public PayoutCommand(
-            IDataStoreService dataStore,
             IBankService bank,
+            DataStoreDbContext dataStoreDbContext,
             ILogger<PayoutCommand> logger,
             RequestTrackingService requestTrackingService
         )
         {
-            this._dataStore = dataStore;
             this._bank = bank;
             this._logger = logger;
             this._requestTrackingService = requestTrackingService;
+            this._dataStoreDbContext = dataStoreDbContext;
         }
 
         /// <summary>
@@ -43,18 +46,46 @@ namespace PaymentGateway.API.Commands
         {
             try
             {
-                var bankResponse = await this._bank.PayOutAsync(BankPayOutRequest.FromPaymentRequest(paymentRequest.paymentRequestBody));
+                var payment = new Payment(
+                                paymentRequest.paymentRequestBody.Currency,
+                                paymentRequest.paymentRequestBody.CVV,
+                                paymentRequest.paymentRequestBody.Amount,
+                                paymentRequest.paymentRequestBody.Expiry,
+                                paymentRequest.paymentRequestBody.CardNumber
+                                );
+                var validationHelper = new ValidationHelper();
+                if (!validationHelper.isValid(payment))
+                {
+                    var errorResponse = new StandardErrorResponse
+                    {
+                        Type = HttpStatusCode.BadRequest.ToString(),
+                        RequestTraceId = this._requestTrackingService.RequestTraceId.ToString(),
+                        Error = $"Invalid Payment request : {JsonSerializer.Serialize(validationHelper.Error)}"
+                    };
 
-                this._logger.LogDebug($@"RequestId:{this._requestTrackingService.RequestTraceId} 
-                Bank Payout finished with status:{bankResponse.Status}");
+                    return new BadRequestObjectResult(errorResponse);
+                }
 
-                var newPaymentId = bankResponse.PaymentId;
-                await this._dataStore.CreateAsync(Payment.FromPaymentRequest(paymentRequest.paymentRequestBody, bankResponse));
+                var bankResponse = await this._bank.PayOutAsync(payment);
+                if (bankResponse.PaymentStatus == Payment.Status.APPROVED)
+                {
+                    payment.Approve(bankResponse.PaymentId);
+                }
 
-                this._logger.LogDebug($@"RequestId:{this._requestTrackingService.RequestTraceId} 
-                Payment stored in DB with PaymentId:{newPaymentId}");
+                if (bankResponse.PaymentStatus == Payment.Status.DECLINED)
+                {
+                    payment.Decline(bankResponse.PaymentId);
+                }
 
-                return new CreatedResult($"/api/payments/{newPaymentId}", new ProcessPaymentResponse { PaymentId = newPaymentId });
+                using (var dbContext = this._dataStoreDbContext)
+                {
+                    var createdPayment = dbContext.Payments.Add(payment);
+                    await dbContext.SaveChangesAsync();
+                    this._logger.LogDebug($@"RequestId:{this._requestTrackingService.RequestTraceId} 
+                        Payment stored in DB with PaymentId:{payment.PaymentId}");
+                }
+
+                return new CreatedResult($"/api/payments/{payment.PaymentId}", new ProcessPaymentResponse { PaymentId = payment.PaymentId });
             }
             catch (BankServiceException ex)
             {

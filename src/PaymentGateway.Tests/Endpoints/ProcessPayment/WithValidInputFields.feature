@@ -18,7 +18,7 @@ Feature: With Valid Input Fields
             """
             {
                 "PaymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
-                "Status": "<Status?>"
+                "PaymentStatus": "<PaymentStatus?>"
             }
             """
         And a POST is called on /api/payments
@@ -27,23 +27,23 @@ Feature: With Valid Input Fields
         And payment is recorded in data store
         And PaymentId in data store record is recorded as d3a36044-9996-4f46-a73f-5d82a7b85a85
         And CardNumber in data store record is recorded as 5500000000000004
-        And Status in data store record is recorded as <Status?>
+        And PaymentStatus in data store record is recorded as <PaymentStatus?>
         And Expiry in data store record is recorded as 12/2024
         And Amount in data store record is recorded as <Amount?>
         And Currency in data store record is recorded as <CurrencyInResponse?>
         And CVV in data store record is not recorded as 123
         Examples:
-            | Amount? | Currency? | Status?      | CurrencyInResponse? |
+            | Amount? | Currency? | PaymentStatus? | CurrencyInResponse? |
             #Currency is empty
-            | 41.00   |           | successful   | GBP                 |
+            | 41.00   |           | APPROVED       | GBP                 |
             #Amount is greter than 0
-            | 41.00   | USD       | successful   | USD                 |
+            | 41.00   | USD       | APPROVED       | USD                 |
             #Amount is less than 0
-            | -51.92  | USD       | successful   | USD                 |
+            | -51.92  | USD       | APPROVED       | USD                 |
             #Amount is equal to 0
-            | 0.00    | GBP       | successful   | GBP                 |
-            #BankTransection unsuccessful
-            | 24.00   | USD       | unsuccessful | USD                 |
+            | 0.00    | GBP       | APPROVED       | GBP                 |
+            #BankTransection DECLINE
+            | 24.00   | USD       | DECLINED       | USD                 |
 
     Scenario: Process Payment when Bank Service is inaccessible
         Given a request with body as
@@ -102,7 +102,7 @@ Feature: With Valid Input Fields
             """
             {
                 "PaymentId": "d3a36044-9996-4f46-a73f-5d82a7b85a85",
-                "Status": "successful"
+                "PaymentStatus": "APPROVED"
             }
             """
         And a POST is called on /api/payments
@@ -110,7 +110,7 @@ Feature: With Valid Input Fields
         And payment Id is returned in response header
         And payment is recorded in data store
         And PaymentId in data store record is recorded as d3a36044-9996-4f46-a73f-5d82a7b85a85
-        And Status in data store record is recorded as successful
+        And PaymentStatus in data store record is recorded as APPROVED
         And CardNumber in data store record is recorded as 5500000000000004
         And Expiry in data store record is recorded as 12/2024
         And Amount in data store record is recorded as 24.56

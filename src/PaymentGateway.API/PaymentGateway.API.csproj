@@ -8,5 +8,8 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.*" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.*" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway.Domain\PaymentGateway.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

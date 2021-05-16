@@ -9,7 +9,7 @@ Feature: Retrieve Payment with valid input
             {
                 "PaymentId": "15b3d508-4ef4-4d76-a085-13d146c7d002",
                 "CardNumber": "5500000000000004",
-                "Status": "successful",
+                "PaymentStatus": "APPROVED",
                 "Expiry": "12/2024",
                 "Amount": 34,
                 "Currency": "GBP",

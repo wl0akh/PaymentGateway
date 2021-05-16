@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using PaymentGateway.Services.DataStore;
+using PaymentGateway.Domain.Entities;
 using TechTalk.SpecFlow;
 
 namespace PaymentGateway.Tests.Endpoints.RetrievePayment
@@ -28,7 +29,15 @@ namespace PaymentGateway.Tests.Endpoints.RetrievePayment
         [Given(@"following payment record exists in data store")]
         public async Task GivenRecordWithPaymentIdInDataStoreAsync(string paymentRecord)
         {
-            var payment = JsonConvert.DeserializeObject<Payment>(paymentRecord);
+            var paymentJSON = JsonConvert.DeserializeObject<Dictionary<string, string>>(paymentRecord);
+            var payment = new Payment(
+                paymentJSON["Currency"],
+                paymentJSON["CVV"],
+                Convert.ToDecimal(paymentJSON["Amount"]),
+                paymentJSON["Expiry"],
+                paymentJSON["CardNumber"]
+            );
+            payment.Approve(Guid.Parse(paymentJSON["PaymentId"]));
             await this._context.CreatePaymentInDataStore(payment);
         }
         [Given(@"record with PaymentId (.*) does not exists in data store")]

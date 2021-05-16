@@ -1,10 +1,11 @@
 using System;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PaymentGateway.API.Services;
+using PaymentGateway.Domain.Entities;
 using PaymentGateway.Utils.Exceptions;
 
 namespace PaymentGateway.Services.Bank
@@ -35,14 +36,13 @@ namespace PaymentGateway.Services.Bank
         /// <summary>
         /// PayOutAsync method pay the payment
         /// </summary>
-        /// <param name="bankPaymentRequest"></param>
+        /// <param name="payment"></param>
         /// <returns>BankPayOutResponse</returns>
-        public async Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest)
+        public async Task<BankPayOutResponse> PayOutAsync(Payment payment)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, this._url);
-            request.Headers.Add("Authorization", "Bearer ****");
             request.Content = new StringContent(
-                JsonSerializer.Serialize<BankPayOutRequest>(bankPaymentRequest),
+                JsonConvert.SerializeObject(payment),
                 Encoding.UTF8,
                 "application/json"
             );
@@ -53,11 +53,11 @@ namespace PaymentGateway.Services.Bank
             {
                 var response = await client.SendAsync(request);
                 var body = await response.Content.ReadAsStringAsync();
-
+                var bankResponse = JsonConvert.DeserializeObject<BankPayOutResponse>(body);
                 this._logger.LogInformation($@"RequestId:{this._requestTrackingService.RequestTraceId} 
-                Bank PayOut Finished");
+                    Bank Payout finished with status:{bankResponse.PaymentStatus}");
 
-                return JsonSerializer.Deserialize<BankPayOutResponse>(body);
+                return bankResponse;
             }
             catch (JsonException jsonException)
             {

@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace PaymentGateway.Utils.CustomValidationAttributes
+namespace PaymentGateway.Domain.CustomValidationAttributes
 {
     /// <summary>
     /// CardExpiryDateAttribute class for validate Expiry field
@@ -29,7 +30,7 @@ namespace PaymentGateway.Utils.CustomValidationAttributes
                     return ValidationResult.Success;
                 }
             }
-            return new ValidationResult(ErrorMessage);
+            return new ValidationResult(ErrorMessage, new List<string> { "Expiry" });
         }
 
     }

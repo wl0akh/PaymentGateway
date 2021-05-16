@@ -17,7 +17,7 @@ Feature: With Invalid Input Fields
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The cardNumber must be of 12 to 19 digits"
+            The cardNumber must be of 12 to 19 digits
             """
         And payment is not recorded in data store
         Examples:
@@ -45,7 +45,7 @@ Feature: With Invalid Input Fields
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The expiry must be in future and in the formate: MM/YYYY"
+            The expiry must be in future and in the formate: MM/YYYY
             """
         And payment is not recorded in data store
         Examples:
@@ -95,7 +95,7 @@ Feature: With Invalid Input Fields
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The currency must be 3 letter string"
+            The currency must be 3 letter string
             """
         And payment is not recorded in data store
         Examples:
@@ -124,7 +124,7 @@ Feature: With Invalid Input Fields
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The cvv must 3 digits"
+            The cvv must 3 digits
             """
         And payment is not recorded in data store
         Examples:

@@ -1,4 +1,3 @@
-using System;
 using PaymentGateway.API.Endpoints.ProcessPayment;
 
 namespace PaymentGateway.Services.Bank

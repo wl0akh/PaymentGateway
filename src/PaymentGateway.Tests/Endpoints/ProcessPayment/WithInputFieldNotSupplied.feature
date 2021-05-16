@@ -29,7 +29,7 @@ Feature: WithInput Field NotSupplied
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The cardNumber must not be empty"
+            The cardNumber must not be empty
             """
         And payment is not recorded in data store
 
@@ -47,7 +47,7 @@ Feature: WithInput Field NotSupplied
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The expiry must be in future and in the formate: MM/YYYY"
+            The expiry must be in future and in the formate: MM/YYYY
             """
         And payment is not recorded in data store
 
@@ -65,7 +65,7 @@ Feature: WithInput Field NotSupplied
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The amount must not be empty"
+            The amount must not be empty
             """
         And payment is not recorded in data store
 
@@ -84,6 +84,6 @@ Feature: WithInput Field NotSupplied
         Then it returns response with status code BadRequest
         And response body contains
             """
-            "The cvv must not be empty"
+            The cvv must not be empty
             """
         And payment is not recorded in data store

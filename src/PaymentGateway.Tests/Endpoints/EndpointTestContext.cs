@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,7 +8,9 @@ using MbDotNet.Enums;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using PaymentGateway.API;
-using PaymentGateway.Services.DataStore;
+using PaymentGateway.Domain;
+using PaymentGateway.Domain.Entities;
+using PaymentGateway.Services;
 
 namespace PaymentGateway.Tests.Endpoints
 {

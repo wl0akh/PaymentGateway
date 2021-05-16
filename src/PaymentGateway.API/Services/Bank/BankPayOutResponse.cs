@@ -1,4 +1,7 @@
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using static PaymentGateway.Domain.Entities.Payment;
 
 namespace PaymentGateway.Services.Bank
 {
@@ -8,6 +11,8 @@ namespace PaymentGateway.Services.Bank
     public class BankPayOutResponse
     {
         public Guid PaymentId { get; set; }
-        public string Status { get; set; }
+        [JsonProperty("PaymentStatus")]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status PaymentStatus { get; set; }
     }
 }

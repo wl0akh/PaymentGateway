@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using PaymentGateway.Domain.Entities;
 
 namespace PaymentGateway.Services.Bank
 {
@@ -11,8 +12,8 @@ namespace PaymentGateway.Services.Bank
         /// <summary>
         /// PayOutAsync method pay the payment
         /// </summary>
-        /// <param name="bankPaymentRequest"></param>
+        /// <param name="payment"></param>
         /// <returns>BankPayOutResponse</returns>
-        Task<BankPayOutResponse> PayOutAsync(BankPayOutRequest bankPaymentRequest);
+        Task<BankPayOutResponse> PayOutAsync(Payment payment);
     }
 }
