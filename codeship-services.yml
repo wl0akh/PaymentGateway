@@ -1,0 +1,23 @@
+payment-gateway:
+  build:
+    dockerfile: Dockerfile
+  environment:
+    ASPNETCORE_ENVIRONMENT: "Development"
+    BANK_SERVICE_URL: "http://mounte-bank:4545/payments"
+    MYSQL_CONNECTION_STRING: "server=mysql;uid=root;pwd=admin;database=TestPaymentGateway"
+    MOUNT_BANK_URL: "http://mounte-bank:2525"
+  depends_on:
+    - mysql
+    - mounte-bank
+
+mysql:
+  image: mysql:latest
+  environment:
+    MYSQL_ROOT_PASSWORD: admin
+    MYSQL_ROOT_HOST: "%"
+  command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+mounte-bank:
+  image: jkris/mountebank:latest
+  volumes:
+    - ./MountBankBankServiceImposters.json:/MountBankBankServiceImposters.json

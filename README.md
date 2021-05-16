@@ -1,9 +1,10 @@
+![Build status](https://www.codeship.io/projects/1be33f30-9869-403c-b30b-7084c6112c38/status?branch=master)
 # PaymentGateway
 PaymentGateway
 
 # Understanding and Assumption
 
-Build PaymentGateway which will be used by Merchant and it's responsibility is to process and retrieve payments for merchants 
+Build PaymentGateway which will be used by Consumer Apps/Services and it's responsibility is to process and retrieve payments for merchants 
 
 1) As discussed we will be making this service REST compliant 
 2) ProcessPayment Request and Response  validation and acceptance criterion is capture in the following feature files 

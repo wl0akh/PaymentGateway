@@ -1,0 +1,6 @@
+- name: build
+  service: payment-gateway
+  command: sh -c "dotnet restore src"
+- name: test
+  service: payment-gateway
+  command: sh -c "dotnet test src"
