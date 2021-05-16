@@ -57,7 +57,7 @@ namespace PaymentGateway.Services.Bank
                 var bankResponse = JsonConvert.DeserializeObject<BankPayOutResponse>(body);
                 this._logger.LogInformation($@"RequestId:{this._requestTrackingService.RequestTraceId} 
                     Bank Payout finished with status:{bankResponse.PaymentStatus}
-                    For Card Ending: {MaskHelper.Mask(payment.CardNumber)}");
+                    for Card ending: {MaskHelper.Mask(payment.CardNumber)}");
 
                 return bankResponse;
             }

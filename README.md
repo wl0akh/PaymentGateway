@@ -38,24 +38,19 @@ Steps to use the Payment service
 2) Every request should have  RequestId in the response header you can copy it and search the logs example logs as shown below
 
 ```
-[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
+[22:46:08 INF] (PaymentGateway.API.Utils.Filters.TrackingActionFilter) RequestId:dc8332cc-ef98-4ccd-a48f-6ba730a159bd 
             Started for controller:ProcessPayment and action:ProcessPayment
-[18:37:42 INF] Start processing HTTP request POST http://mounte-bank:6060/payments
-[18:37:42 INF] Sending HTTP request POST http://mounte-bank:6060/payments
-[18:37:42 INF] Received HTTP response after 30.957ms - OK
-[18:37:42 INF] End processing HTTP request after 37.4477ms - OK
-[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
+[22:46:08 INF] (System.Net.Http.HttpClient.Default.LogicalHandler) Start processing HTTP request POST http://mounte-bank:6060/payments
+[22:46:08 INF] (System.Net.Http.HttpClient.Default.ClientHandler) Sending HTTP request POST http://mounte-bank:6060/payments
+[22:46:08 INF] (System.Net.Http.HttpClient.Default.ClientHandler) Received HTTP response after 33.3815ms - OK
+[22:46:08 INF] (System.Net.Http.HttpClient.Default.LogicalHandler) End processing HTTP request after 41.2477ms - OK
+[22:46:08 INF] (PaymentGateway.Services.Bank.BankService) RequestId:dc8332cc-ef98-4ccd-a48f-6ba730a159bd 
                     Bank Payout finished with status:APPROVED
-                    For Card Ending: ***************6789
-[18:37:42 INF] Entity Framework Core 3.1.15 initialized 'DataStoreDbContext' using provider 'MySql.Data.EntityFrameworkCore' with options: None
-[18:37:42 INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 16) (DbType = Binary), @p1='?' (DbType = Decimal), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+                    for Card ending: ***************6789
+[22:46:08 INF] (Microsoft.EntityFrameworkCore.Infrastructure) Entity Framework Core 3.1.15 initialized 'DataStoreDbContext' using provider 'MySql.Data.EntityFrameworkCore' with options: None
+[22:46:08 INF] (Microsoft.EntityFrameworkCore.Database.Command) Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 16) (DbType = Binary), @p1='?' (DbType = Decimal), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
 INSERT INTO `Payments` (`PaymentId`, `Amount`, `CardNumber`, `Currency`, `Expiry`, `PaymentStatus`)
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
-[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
-            Finished in Duration: 245.4722 Milliseconds
-[18:37:42 INF] Executing ObjectResult, writing value of type 'PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentResponse'.
-[18:37:42 INF] Executed action PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentController.ProcessPaymentAsync (PaymentGateway.API) in 356.7469ms
-[18:37:42 INF] Executed endpoint 'PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentController.ProcessPaymentAsync (PaymentGateway.API)'
-[18:37:42 INF] Request finished in 437.4716ms 201 application/json; charset=utf-8
-
+[22:46:08 INF] (PaymentGateway.API.Utils.Filters.TrackingActionFilter) RequestId:dc8332cc-ef98-4ccd-a48f-6ba730a159bd 
+            Finished in Duration: 260.9033 Milliseconds
 ```

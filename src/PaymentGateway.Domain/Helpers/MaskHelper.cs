@@ -14,7 +14,7 @@ namespace PaymentGateway.Utils.Helpers
         /// <returns> string of Masked cardNumber</returns>
         public static string Mask(string cardNumber)
         {
-            var lastDigits = cardNumber.Substring(cardNumber.Length - 4, 4);
+            var lastDigits = cardNumber.Length < 4 ? cardNumber : cardNumber.Substring(cardNumber.Length - 4, 4);
             var remainingDigitsLength = cardNumber.Length - 4;
             string remainingDigits = "";
             for (int i = 0; i < remainingDigitsLength; i++)
