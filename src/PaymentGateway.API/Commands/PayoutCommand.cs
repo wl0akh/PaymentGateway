@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,7 +9,6 @@ using PaymentGateway.Domain.Entities;
 using PaymentGateway.Services;
 using PaymentGateway.Services.Bank;
 using PaymentGateway.Utils.Exceptions;
-using PaymentGateway.Utils.Helpers;
 
 namespace PaymentGateway.API.Commands
 {
@@ -40,32 +38,12 @@ namespace PaymentGateway.API.Commands
         /// <summary>
         /// ExecuteAsync to execute and process payment
         /// </summary>
-        /// <param name="processPaymentRequest"></param>
+        /// <param name="payment"></param>
         /// <returns>Task<ActionResult<ProcessPaymentResponse>></returns>
-        public async Task<ActionResult<ProcessPaymentResponse>> ExecuteAsync(ProcessPaymentRequest paymentRequest)
+        public async Task<ActionResult<ProcessPaymentResponse>> ExecuteAsync(Payment payment)
         {
             try
             {
-                var payment = new Payment(
-                                paymentRequest.paymentRequestBody.Currency,
-                                paymentRequest.paymentRequestBody.CVV,
-                                paymentRequest.paymentRequestBody.Amount,
-                                paymentRequest.paymentRequestBody.Expiry,
-                                paymentRequest.paymentRequestBody.CardNumber
-                                );
-                var validationHelper = new ValidationHelper();
-                if (!validationHelper.isValid(payment))
-                {
-                    var errorResponse = new StandardErrorResponse
-                    {
-                        Type = HttpStatusCode.BadRequest.ToString(),
-                        RequestTraceId = this._requestTrackingService.RequestTraceId.ToString(),
-                        Error = $"Invalid Payment request : {JsonSerializer.Serialize(validationHelper.Error)}"
-                    };
-
-                    return new BadRequestObjectResult(errorResponse);
-                }
-
                 var bankResponse = await this._bank.PayOutAsync(payment);
                 if (bankResponse.PaymentStatus == Payment.Status.APPROVED)
                 {
