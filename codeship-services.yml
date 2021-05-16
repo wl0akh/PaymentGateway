@@ -1,6 +1,6 @@
 payment-gateway:
   build:
-    dockerfile: Dockerfile
+    dockerfile: DockerfileCodeship
   environment:
     ASPNETCORE_ENVIRONMENT: "Development"
     BANK_SERVICE_URL: "http://mounte-bank:4545/payments"

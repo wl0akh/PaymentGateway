@@ -34,6 +34,6 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       BANK_SERVICE_URL: "http://mounte-bank:6060/payments"
       MYSQL_CONNECTION_STRING: "server=mysql;uid=root;pwd=admin;database=PaymentGateway"
-    command: dotnet run --project ./src/PaymentGateway.API/PaymentGateway.API.csproj
+    command: dotnet PaymentGateway.API.dll
     ports:
       - 80:80
