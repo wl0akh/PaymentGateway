@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using PaymentGateway.API.Services;
 using PaymentGateway.Domain.Entities;
 using PaymentGateway.Utils.Exceptions;
+using PaymentGateway.Utils.Helpers;
 
 namespace PaymentGateway.Services.Bank
 {
@@ -55,7 +56,8 @@ namespace PaymentGateway.Services.Bank
                 var body = await response.Content.ReadAsStringAsync();
                 var bankResponse = JsonConvert.DeserializeObject<BankPayOutResponse>(body);
                 this._logger.LogInformation($@"RequestId:{this._requestTrackingService.RequestTraceId} 
-                    Bank Payout finished with status:{bankResponse.PaymentStatus}");
+                    Bank Payout finished with status:{bankResponse.PaymentStatus}
+                    For Card Ending: {MaskHelper.Mask(payment.CardNumber)}");
 
                 return bankResponse;
             }

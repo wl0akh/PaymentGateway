@@ -35,29 +35,27 @@ Steps to use the Payment service
 # Logging and Analysis
 
 1) To view Log Run ``` docker logs PaymentGateway -f ```
-2) Every request should have  RequestTrackingId in the response header you can copy it and search the logs example logs as shown below
+2) Every request should have  RequestId in the response header you can copy it and search the logs example logs as shown below
 
 ```
+[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
+            Started for controller:ProcessPayment and action:ProcessPayment
+[18:37:42 INF] Start processing HTTP request POST http://mounte-bank:6060/payments
+[18:37:42 INF] Sending HTTP request POST http://mounte-bank:6060/payments
+[18:37:42 INF] Received HTTP response after 30.957ms - OK
+[18:37:42 INF] End processing HTTP request after 37.4477ms - OK
+[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
+                    Bank Payout finished with status:APPROVED
+                    For Card Ending: ***************6789
+[18:37:42 INF] Entity Framework Core 3.1.15 initialized 'DataStoreDbContext' using provider 'MySql.Data.EntityFrameworkCore' with options: None
+[18:37:42 INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 16) (DbType = Binary), @p1='?' (DbType = Decimal), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+INSERT INTO `Payments` (`PaymentId`, `Amount`, `CardNumber`, `Currency`, `Expiry`, `PaymentStatus`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+[18:37:42 INF] RequestId:e95968ef-0fd9-4a78-ac5d-ec36239e7fab 
+            Finished in Duration: 245.4722 Milliseconds
+[18:37:42 INF] Executing ObjectResult, writing value of type 'PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentResponse'.
+[18:37:42 INF] Executed action PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentController.ProcessPaymentAsync (PaymentGateway.API) in 356.7469ms
+[18:37:42 INF] Executed endpoint 'PaymentGateway.API.Endpoints.ProcessPayment.ProcessPaymentController.ProcessPaymentAsync (PaymentGateway.API)'
+[18:37:42 INF] Request finished in 437.4716ms 201 application/json; charset=utf-8
 
-info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      ***RequestId:a865ac81-6d4b-4c1b-9669-4a6e8d6da16e***
-                  Started for controller:RetrievePayment and action:RetrievePayment
-info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      ***RequestId:a865ac81-6d4b-4c1b-9669-4a6e8d6da16e***
-                  Finished in Duration: 14.3268 Milliseconds
-
-
-
-
-
-
-info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
-                  Started for controller:RetrievePayment and action:RetrievePayment
-warn: PaymentGateway.API.Endpoints.RetrievePayment.RetrievePaymentController[0]
-      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
-                      Payment details Not Found in DB for PaymentId:0cb245f9-0c6c-458d-9ad4-cb5cbd33cbba
-info: PaymentGateway.API.Utils.Filters.TrackingActionFilter[0]
-      ***RequestId:30ad5169-e5d7-489a-b2a0-ee1d78bbdb87***
-                  Finished in Duration: 8.4638 Milliseconds
 ```
