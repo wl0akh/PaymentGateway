@@ -1,4 +1,4 @@
-![Build status](https://www.codeship.io/projects/1be33f30-9869-403c-b30b-7084c6112c38/status?branch=master)
+![Build status](https://www.codeship.io/projects/5ab2a03d-a2a1-4e43-8216-ae50e14518e5/status?branch=master)
 # PaymentGateway
 PaymentGateway
 
