@@ -1,10 +1,12 @@
-- name: build
-  service: payment-gateway
-  command: sh -c "dotnet restore src"
-- name: test
-  service: payment-gateway
-  command: sh -c "dotnet test src"
-  # - name: Push to ECR
-  # tag: ^v(\d+\.){2}\d+(\.rc\d+)?$|^build-|^master$
-  # type: parallel
-  # dockercfg_service: aws-generator
+- type: parallel
+  steps:
+    - name: build
+      service: payment-gateway
+      command: sh -c "dotnet restore src"
+    - name: test
+      service: payment-gateway
+      command: sh -c "dotnet test src"
+    - name: Push to ECR
+      tag: ^v(\d+\.){2}\d+(\.rc\d+)?$|^build-$
+      service: payment-gateway
+      command: true
