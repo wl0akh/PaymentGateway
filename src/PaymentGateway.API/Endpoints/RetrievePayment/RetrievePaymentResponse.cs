@@ -1,5 +1,5 @@
 using System;
-using PaymentGateway.Utils.Helpers;
+using PaymentGateway.Helpers;
 using static PaymentGateway.Domain.Entities.Payment;
 
 namespace PaymentGateway.API.Endpoints.RetrievePayment

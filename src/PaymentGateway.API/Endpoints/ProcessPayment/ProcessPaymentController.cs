@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.API.Commands;
 using PaymentGateway.API.Services;
 using PaymentGateway.Domain.Entities;
-using PaymentGateway.Utils.Helpers;
 using System.Text.Json;
 using System.Net;
 using PaymentGateway.API.Utils.Filters;
+using PaymentGateway.Helpers;
 
 namespace PaymentGateway.API.Endpoints.ProcessPayment
 {
@@ -19,7 +19,7 @@ namespace PaymentGateway.API.Endpoints.ProcessPayment
 
         private readonly IPayoutCommand _payoutCommand;
         private readonly RequestTrackingService _requestTrackingService;
-        public ProcessPaymentController(IPayoutCommand payoutCommand,  RequestTrackingService requestTrackingService)
+        public ProcessPaymentController(IPayoutCommand payoutCommand, RequestTrackingService requestTrackingService)
         {
             this._payoutCommand = payoutCommand;
             this._requestTrackingService = requestTrackingService;
@@ -43,13 +43,14 @@ namespace PaymentGateway.API.Endpoints.ProcessPayment
                                 paymentRequest.paymentRequestBody.CardNumber
                                 );
             var validationHelper = new ValidationHelper();
-            if (!validationHelper.isValid(payment)){
+            if (!validationHelper.isValid(payment))
+            {
                 var errorResponse = new StandardErrorResponse
-                    {
-                        Type = HttpStatusCode.BadRequest.ToString(),
-                        RequestTraceId = this._requestTrackingService.RequestTraceId.ToString(),
-                        Error = $"Invalid Payment request : {JsonSerializer.Serialize(validationHelper.Error)}"
-                    };
+                {
+                    Type = HttpStatusCode.BadRequest.ToString(),
+                    RequestTraceId = this._requestTrackingService.RequestTraceId.ToString(),
+                    Error = $"Invalid Payment request : {JsonSerializer.Serialize(validationHelper.Error)}"
+                };
 
                 return new BadRequestObjectResult(errorResponse);
             }

@@ -1,6 +1,6 @@
 using System;
 
-namespace PaymentGateway.Utils.Helpers
+namespace PaymentGateway.Helpers
 {
     /// <summary>
     /// Helper class to mask CardNumber 

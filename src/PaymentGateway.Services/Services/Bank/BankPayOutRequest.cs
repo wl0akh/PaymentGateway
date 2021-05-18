@@ -1,4 +1,4 @@
-using PaymentGateway.API.Endpoints.ProcessPayment;
+using PaymentGateway.Domain.Entities;
 
 namespace PaymentGateway.Services.Bank
 {
@@ -16,17 +16,17 @@ namespace PaymentGateway.Services.Bank
         /// <summary>
         /// BankPayOutRequest to translate PaymentRequestBody to BankPayOutRequest
         /// </summary>
-        /// <param name="paymentRequest"></param>
+        /// <param name="payment"></param>
         /// <returns></returns>
-        public static BankPayOutRequest FromPaymentRequest(PaymentRequestBody paymentRequest)
+        public static BankPayOutRequest FromPayment(Payment payment)
         {
             return new BankPayOutRequest
             {
-                CardNumber = paymentRequest.CardNumber,
-                Expiry = paymentRequest.Expiry,
-                Amount = paymentRequest.Amount,
-                Currency = paymentRequest.Currency,
-                CVV = paymentRequest.CVV
+                CardNumber = payment.CardNumber,
+                Expiry = payment.Expiry,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                CVV = payment.CVV
             };
         }
     }

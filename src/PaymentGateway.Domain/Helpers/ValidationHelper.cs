@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using PaymentGateway.Domain.Entities;
 
-namespace PaymentGateway.Utils.Helpers
+namespace PaymentGateway.Helpers
 {
     /// <summary>
     /// Helper class to mask CardNumber 

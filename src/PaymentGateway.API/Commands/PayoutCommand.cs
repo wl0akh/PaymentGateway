@@ -8,7 +8,7 @@ using PaymentGateway.API.Services;
 using PaymentGateway.Domain.Entities;
 using PaymentGateway.Services;
 using PaymentGateway.Services.Bank;
-using PaymentGateway.Utils.Exceptions;
+using PaymentGateway.Services.Bank.Exceptions;
 
 namespace PaymentGateway.API.Commands
 {

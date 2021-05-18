@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using PaymentGateway.Utils.Helpers;
+using PaymentGateway.Helpers;
 
 namespace PaymentGateway.Tests.Utils.Helpers
 {

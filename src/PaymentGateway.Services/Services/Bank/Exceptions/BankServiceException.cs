@@ -1,6 +1,6 @@
 using System;
 
-namespace PaymentGateway.Utils.Exceptions
+namespace PaymentGateway.Services.Bank.Exceptions
 {
     /// <summary>
     /// BankServiceException class to encapsulate BankService errors 

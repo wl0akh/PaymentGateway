@@ -11,7 +11,7 @@ using NUnit.Framework;
 using PaymentGateway.API.Services;
 using PaymentGateway.Domain.Entities;
 using PaymentGateway.Services.Bank;
-using PaymentGateway.Utils.Exceptions;
+using PaymentGateway.Services.Bank.Exceptions;
 using static PaymentGateway.Domain.Entities.Payment;
 
 namespace PaymentGateway.Tests.Services

@@ -6,8 +6,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PaymentGateway.API.Services;
 using PaymentGateway.Domain.Entities;
-using PaymentGateway.Utils.Exceptions;
-using PaymentGateway.Utils.Helpers;
+using PaymentGateway.Helpers;
+using PaymentGateway.Services.Bank.Exceptions;
 
 namespace PaymentGateway.Services.Bank
 {
